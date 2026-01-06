@@ -21,10 +21,18 @@
 	import { toast } from 'svelte-sonner';
 	import { ModeToggle } from '$lib/components/blocks';
 	import { Separator } from '$lib/components/ui/separator';
+	import { Switch } from '$lib/components/ui/switch';
+	import { Label } from '$lib/components/ui/label';
+	import { getFullInstallConfig } from '$lib/mcp-utils';
 
 	let searchQuery = $state('');
 	let selectedMcp = $state<MCP | null>(null);
 	let isDialogOpen = $state(false);
+	let preferredTransport = $state<'sse' | 'http'>('sse');
+
+	let installConfig = $derived(
+		selectedMcp ? getFullInstallConfig(selectedMcp, preferredTransport) : null
+	);
 
 	let filteredMcps = $derived(
 		mcps.filter((mcp) => {
@@ -235,100 +243,164 @@
 						<Separator class="bg-border/50" />
 
 						<section>
-							<h3 class="mb-4 flex items-center gap-2 text-lg font-semibold text-foreground">
-								<Settings class="h-5 w-5 text-primary" />
-								Installation
-							</h3>
-							<Tabs.Root value="cursor" class="w-full">
-								<Tabs.List
-									class="w-full justify-start overflow-x-auto border border-border/50 bg-muted/20 p-1"
-								>
-									<Tabs.Trigger
-										value="cursor"
-										class="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-										>Cursor</Tabs.Trigger
+							<div class="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+								<h3 class="flex items-center gap-2 text-lg font-semibold text-foreground">
+									<Settings class="h-5 w-5 text-primary" />
+									Installation
+								</h3>
+								<div class="flex items-center space-x-2 rounded-lg bg-muted/30 px-3 py-1.5">
+									<Label for="transport-toggle" class="text-xs font-medium text-muted-foreground"
+										>HTTP</Label
 									>
-									<Tabs.Trigger
-										value="vscode"
-										class="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-										>VS Code</Tabs.Trigger
+									<Switch
+										id="transport-toggle"
+										checked={preferredTransport === 'sse'}
+										onCheckedChange={(checked) => (preferredTransport = checked ? 'sse' : 'http')}
+									/>
+									<Label for="transport-toggle" class="text-xs font-medium text-primary">SSE</Label>
+								</div>
+							</div>
+							{#if installConfig}
+								<Tabs.Root value="cursor" class="w-full">
+									<Tabs.List
+										class="w-full justify-start overflow-x-auto border border-border/50 bg-muted/20 p-1"
 									>
-									<Tabs.Trigger
-										value="claude"
-										class="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-										>Claude</Tabs.Trigger
-									>
-									<Tabs.Trigger
-										value="windsurf"
-										class="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-										>Windsurf</Tabs.Trigger
-									>
-									<Tabs.Trigger
-										value="cli"
-										class="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-										>CLI</Tabs.Trigger
-									>
-								</Tabs.List>
+										{#each (Object.keys(installConfig) as Array<keyof typeof installConfig>).filter((k) => k !== 'codex' && k !== 'gemini' && installConfig[k]) as platform (platform)}
+											<Tabs.Trigger
+												value={platform}
+												class="capitalize data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+											>
+												{platform === 'vscode' ? 'VS Code' : platform}
+											</Tabs.Trigger>
+										{/each}
+									</Tabs.List>
 
-								<Tabs.Content value="cursor" class="mt-4">
-									<p class="mb-2 text-sm text-muted-foreground">
-										Add as a SSE type MCP server in Cursor settings:
-									</p>
-									{@render codeCpy(formatConfig(selectedMcp.install.cursor))}
-								</Tabs.Content>
+									<Tabs.Content value="cursor" class="mt-4">
+										<p class="mb-2 text-sm text-muted-foreground">
+											Add as a <strong class="text-primary uppercase">{preferredTransport}</strong> type
+											MCP server in Cursor settings:
+										</p>
+										{@render codeCpy(formatConfig(installConfig.cursor!))}
+									</Tabs.Content>
 
-								<Tabs.Content value="vscode" class="mt-4">
-									<Tabs.Root value="palette" class="w-full">
-										<Tabs.List class="grid w-full grid-cols-2 bg-muted/40 p-1">
-											<Tabs.Trigger value="palette">Command Palette</Tabs.Trigger>
-											<Tabs.Trigger value="json">mcp.json</Tabs.Trigger>
-										</Tabs.List>
-										<Tabs.Content value="palette" class="mt-4">
-											<p class="mb-2 text-sm text-muted-foreground">
-												Run <strong>MCP: Add Server</strong> (Cmd/Ctrl+Shift+P) and paste:
-											</p>
-											{@render codeCpy(selectedMcp.install.vscode.commandPalette)}
-										</Tabs.Content>
-										<Tabs.Content value="json" class="mt-4">
-											<p class="mb-2 text-sm text-muted-foreground">
-												Add to your <strong>.vscode/mcp.json</strong> or user-level config:
-											</p>
-											{@render codeCpy(formatConfig(selectedMcp.install.vscode.mcpJson))}
-										</Tabs.Content>
-									</Tabs.Root>
-								</Tabs.Content>
+									<Tabs.Content value="vscode" class="mt-4">
+										<Tabs.Root value="palette" class="w-full">
+											<Tabs.List class="grid w-full grid-cols-2 bg-muted/40 p-1">
+												<Tabs.Trigger value="palette">Command Palette</Tabs.Trigger>
+												<Tabs.Trigger value="json">mcp.json</Tabs.Trigger>
+											</Tabs.List>
+											<Tabs.Content value="palette" class="mt-4">
+												<p class="mb-2 text-sm text-muted-foreground">
+													Run <strong>MCP: Add Server</strong> (Cmd/Ctrl+Shift+P) and paste:
+												</p>
+												{@render codeCpy(installConfig.vscode!.commandPalette)}
+											</Tabs.Content>
+											<Tabs.Content value="json" class="mt-4">
+												<p class="mb-2 text-sm text-muted-foreground">
+													Add to your <strong>.vscode/mcp.json</strong> or user-level config:
+												</p>
+												{@render codeCpy(formatConfig(installConfig.vscode!.mcpJson))}
+											</Tabs.Content>
+										</Tabs.Root>
+									</Tabs.Content>
 
-								<Tabs.Content value="claude" class="mt-4">
-									<Tabs.Root value="config" class="w-full">
-										<Tabs.List class="grid w-full grid-cols-2 bg-muted/40 p-1">
-											<Tabs.Trigger value="config">Config File</Tabs.Trigger>
-											<Tabs.Trigger value="cli">CLI Command</Tabs.Trigger>
-										</Tabs.List>
-										<Tabs.Content value="config" class="mt-4">
-											<p class="mb-2 text-sm text-muted-foreground">
-												Add to your <strong>claude_desktop_config.json</strong>:
-											</p>
-											{@render codeCpy(formatConfig(selectedMcp.install.claude.config))}
-										</Tabs.Content>
-										<Tabs.Content value="cli" class="mt-4">
-											<p class="mb-2 text-sm text-muted-foreground">
-												Run this command for <strong>Claude Code</strong>:
-											</p>
-											{@render codeCpy(selectedMcp.install.claude.command || '')}
-										</Tabs.Content>
-									</Tabs.Root>
-								</Tabs.Content>
+									<Tabs.Content value="claude" class="mt-4">
+										<Tabs.Root value="config" class="w-full">
+											<Tabs.List class="grid w-full grid-cols-2 bg-muted/40 p-1">
+												<Tabs.Trigger value="config">Config File</Tabs.Trigger>
+												<Tabs.Trigger value="cli">CLI Command</Tabs.Trigger>
+											</Tabs.List>
+											<Tabs.Content value="config" class="mt-4">
+												<p class="mb-2 text-sm text-muted-foreground">
+													Add to your <strong>claude_desktop_config.json</strong> using
+													<strong class="text-primary uppercase">{preferredTransport}</strong>:
+												</p>
+												{@render codeCpy(formatConfig(installConfig.claude!.config))}
+											</Tabs.Content>
+											<Tabs.Content value="cli" class="mt-4">
+												<p class="mb-2 text-sm text-muted-foreground">
+													Run this command for <strong>Claude Code</strong>:
+												</p>
+												{@render codeCpy(installConfig.claude!.command || '')}
+											</Tabs.Content>
+										</Tabs.Root>
+									</Tabs.Content>
 
-								<Tabs.Content value="windsurf" class="mt-4">
-									<p class="mb-2 text-sm text-muted-foreground">Add to Windsurf configuration:</p>
-									{@render codeCpy(formatConfig(selectedMcp.install.windsurf))}
-								</Tabs.Content>
+									<Tabs.Content value="windsurf" class="mt-4">
+										<p class="mb-2 text-sm text-muted-foreground">
+											Add to Windsurf configuration using
+											<strong class="text-primary uppercase">{preferredTransport}</strong>:
+										</p>
+										{@render codeCpy(formatConfig(installConfig.windsurf!))}
+									</Tabs.Content>
 
-								<Tabs.Content value="cli" class="mt-4">
-									<p class="mb-2 text-sm text-muted-foreground">Test the MCP server directly:</p>
-									{@render codeCpy(selectedMcp.install.cli)}
-								</Tabs.Content>
-							</Tabs.Root>
+									<Tabs.Content value="zed" class="mt-4">
+										<p class="mb-2 text-sm text-muted-foreground">Add to Zed settings.json:</p>
+										{#if installConfig.zed}
+											<Tabs.Root value="config" class="w-full">
+												<Tabs.List class="grid w-full grid-cols-2 bg-muted/40 p-1">
+													<Tabs.Trigger value="config">Config</Tabs.Trigger>
+													<Tabs.Trigger value="source">Install Source</Tabs.Trigger>
+												</Tabs.List>
+												<Tabs.Content value="config" class="mt-4">
+													{@render codeCpy(
+														formatConfig((installConfig.zed as any).config || installConfig.zed)
+													)}
+												</Tabs.Content>
+												<Tabs.Content value="source" class="mt-4">
+													<p class="mb-2 text-xs text-muted-foreground italic">
+														Requires an extension to serve as the MCP host:
+													</p>
+													{@render codeCpy(
+														formatConfig(
+															(installConfig.zed as any).context_servers?.[selectedMcp.name]
+																?.source || 'custom'
+														)
+													)}
+												</Tabs.Content>
+											</Tabs.Root>
+										{:else}
+											<p class="text-sm italic">Zed configuration not available.</p>
+										{/if}
+									</Tabs.Content>
+
+									<Tabs.Content value="cli" class="mt-4">
+										<Tabs.Root value="direct" class="w-full">
+											<Tabs.List
+												class="w-full justify-start overflow-x-auto border border-border/50 bg-muted/40 p-1"
+											>
+												<Tabs.Trigger value="direct">Direct</Tabs.Trigger>
+												{#if installConfig.codex}
+													<Tabs.Trigger value="codex">Codex</Tabs.Trigger>
+												{/if}
+												{#if installConfig.gemini}
+													<Tabs.Trigger value="gemini">Gemini</Tabs.Trigger>
+												{/if}
+											</Tabs.List>
+											<Tabs.Content value="direct" class="mt-4">
+												<p class="mb-2 text-sm text-muted-foreground">
+													Test the MCP server directly:
+												</p>
+												{@render codeCpy(installConfig.cli!)}
+											</Tabs.Content>
+											{#if installConfig.codex}
+												<Tabs.Content value="codex" class="mt-4">
+													<p class="mb-2 text-sm text-muted-foreground">Run via Codex CLI:</p>
+													{@render codeCpy(installConfig.codex)}
+												</Tabs.Content>
+											{/if}
+											{#if installConfig.gemini}
+												<Tabs.Content value="gemini" class="mt-4">
+													<p class="mb-2 text-sm text-muted-foreground">
+														Run via Gemini mcp-remote:
+													</p>
+													{@render codeCpy(formatConfig(installConfig.gemini))}
+												</Tabs.Content>
+											{/if}
+										</Tabs.Root>
+									</Tabs.Content>
+								</Tabs.Root>
+							{/if}
 						</section>
 					</div>
 				</div>

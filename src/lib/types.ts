@@ -24,7 +24,28 @@ export interface VSCodeInstall {
 }
 
 export interface ZedInstall {
-	[key: string]: unknown;
+	config?: Record<string, unknown>;
+	context_servers?: Record<
+		string,
+		{
+			source: string;
+			command: string;
+			args: string[];
+			env: Record<string, string>;
+		}
+	>;
+	[key: string]: any;
+}
+
+export interface MCPInstallConfig {
+	claude?: ClaudeInstall;
+	cursor?: CursorInstall;
+	windsurf?: WindsurfInstall;
+	vscode?: VSCodeInstall;
+	zed?: ZedInstall | { context_servers: Record<string, any> };
+	cli?: string;
+	codex?: string;
+	gemini?: Record<string, unknown>;
 }
 
 export interface Tool {
@@ -41,17 +62,28 @@ export interface Prompt {
 export interface MCP {
 	id: string;
 	name: string;
+	version?: string;
 	description: string;
 	tags: string[];
 	githubUrl: string;
 	features: string[];
+	mastra?: {
+		domain: string;
+		slug: string;
+	};
+	endpoints?: {
+		sse: string;
+		http: string;
+	};
 	install: {
-		claude: ClaudeInstall;
-		cursor: CursorInstall;
-		windsurf: WindsurfInstall;
-		vscode: VSCodeInstall;
+		claude?: ClaudeInstall;
+		cursor?: CursorInstall;
+		windsurf?: WindsurfInstall;
+		vscode?: VSCodeInstall;
 		zed?: ZedInstall;
-		cli: string;
+		cli?: string;
+		codex?: string;
+		gemini?: Record<string, unknown>;
 	};
 	tools?: Tool[];
 	prompts?: Prompt[];

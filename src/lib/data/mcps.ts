@@ -15,46 +15,11 @@ export const mcps: MCP[] = [
 			'Fuzzy search with typo tolerance',
 			'Support for HTTP and SSE transports'
 		],
-		install: {
-			claude: {
-				config: {
-					mcpServers: {
-						'shadcn-svelte': {
-							command: 'npx',
-							args: ['-y', 'mcp-remote', 'https://shadcn-svelte.mastra.cloud/api/mcp/shadcn/mcp']
-						}
-					}
-				},
-				command:
-					'claude mcp add --transport http shadcn-svelte https://shadcn-svelte.mastra.cloud/api/mcp/shadcn/mcp'
-			},
-			cursor: {
-				'shadcn-svelte': {
-					type: 'sse',
-					url: 'https://shadcn-svelte.mastra.cloud/api/mcp/shadcn/sse'
-				}
-			},
-			windsurf: {
-				mcpServers: {
-					'shadcn-svelte': {
-						url: 'https://shadcn-svelte.mastra.cloud/api/mcp/shadcn/sse',
-						transport: 'sse'
-					}
-				}
-			},
-			vscode: {
-				commandPalette: 'https://shadcn-svelte.mastra.cloud/api/mcp/shadcn/sse',
-				mcpJson: {
-					mcpServers: {
-						'shadcn-svelte': {
-							command: 'npx',
-							args: ['-y', 'mcp-remote', 'https://shadcn-svelte.mastra.cloud/api/mcp/shadcn/sse']
-						}
-					}
-				}
-			},
-			cli: 'npx -y mcp-remote https://shadcn-svelte.mastra.cloud/api/mcp/shadcn/mcp'
+		mastra: {
+			domain: 'shadcn-svelte.mastra.cloud',
+			slug: 'shadcn'
 		},
+		install: {},
 		tools: [
 			{
 				name: 'shadcn-svelte-list',
@@ -111,46 +76,11 @@ export const mcps: MCP[] = [
 			'Clean HTML output',
 			'Guided prompts for common workflows'
 		],
-		install: {
-			claude: {
-				config: {
-					mcpServers: {
-						'tauri-docs': {
-							command: 'npx',
-							args: ['-y', 'mcp-remote', 'https://tauri-docs.mastra.cloud/api/mcp/tauri-docs/mcp']
-						}
-					}
-				},
-				command:
-					'claude mcp add --transport http tauri-docs https://tauri-docs.mastra.cloud/api/mcp/tauri-docs/mcp'
-			},
-			cursor: {
-				'tauri-docs': {
-					type: 'sse',
-					url: 'https://tauri-docs.mastra.cloud/api/mcp/tauri-docs/sse'
-				}
-			},
-			windsurf: {
-				mcpServers: {
-					'tauri-docs': {
-						url: 'https://tauri-docs.mastra.cloud/api/mcp/tauri-docs/sse',
-						transport: 'sse'
-					}
-				}
-			},
-			vscode: {
-				commandPalette: 'https://tauri-docs.mastra.cloud/api/mcp/tauri-docs/sse',
-				mcpJson: {
-					mcpServers: {
-						'tauri-docs': {
-							command: 'npx',
-							args: ['-y', 'mcp-remote', 'https://tauri-docs.mastra.cloud/api/mcp/tauri-docs/sse']
-						}
-					}
-				}
-			},
-			cli: 'npx -y mcp-remote https://tauri-docs.mastra.cloud/api/mcp/tauri-docs/mcp'
+		mastra: {
+			domain: 'tauri-docs.mastra.cloud',
+			slug: 'tauri-docs'
 		},
+		install: {},
 		tools: [
 			{ name: 'tauri-docs-search', description: 'Search through Tauri documentation.' },
 			{ name: 'tauri-docs-get', description: 'Retrieve specific Tauri documentation pages.' }
@@ -172,46 +102,11 @@ export const mcps: MCP[] = [
 			'Standard library API reference',
 			'Crate documentation support'
 		],
-		install: {
-			claude: {
-				config: {
-					mcpServers: {
-						'rust-docs': {
-							command: 'npx',
-							args: ['-y', 'mcp-remote', 'https://rust-docs.mastra.cloud/api/mcp/rust-docs/mcp']
-						}
-					}
-				},
-				command:
-					'claude mcp add --transport http rust-docs https://rust-docs.mastra.cloud/api/mcp/rust-docs/mcp'
-			},
-			cursor: {
-				'rust-docs': {
-					type: 'sse',
-					url: 'https://rust-docs.mastra.cloud/api/mcp/rust-docs/sse'
-				}
-			},
-			windsurf: {
-				mcpServers: {
-					'rust-docs': {
-						url: 'https://rust-docs.mastra.cloud/api/mcp/rust-docs/sse',
-						transport: 'sse'
-					}
-				}
-			},
-			vscode: {
-				commandPalette: 'https://rust-docs.mastra.cloud/api/mcp/rust-docs/sse',
-				mcpJson: {
-					mcpServers: {
-						'rust-docs': {
-							command: 'npx',
-							args: ['-y', 'mcp-remote', 'https://rust-docs.mastra.cloud/api/mcp/rust-docs/sse']
-						}
-					}
-				}
-			},
-			cli: 'npx -y mcp-remote https://rust-docs.mastra.cloud/api/mcp/rust-docs/mcp'
+		mastra: {
+			domain: 'rust-docs.mastra.cloud',
+			slug: 'rust-docs'
 		},
+		install: {},
 		tools: [
 			{ name: 'rust-docs-search', description: 'Search official Rust documentation.' },
 			{ name: 'rust-docs-get', description: 'Fetch details for specific Rust modules or types.' }
@@ -233,46 +128,11 @@ export const mcps: MCP[] = [
 			'Standard library reference',
 			'Function signature lookup'
 		],
-		install: {
-			claude: {
-				config: {
-					mcpServers: {
-						'go-docs': {
-							command: 'npx',
-							args: ['-y', 'mcp-remote', 'https://go-docs.mastra.cloud/api/mcp/go-docs/mcp']
-						}
-					}
-				},
-				command:
-					'claude mcp add --transport http go-docs https://go-docs.mastra.cloud/api/mcp/go-docs/mcp'
-			},
-			cursor: {
-				'go-docs': {
-					type: 'sse',
-					url: 'https://go-docs.mastra.cloud/api/mcp/go-docs/sse'
-				}
-			},
-			windsurf: {
-				mcpServers: {
-					'go-docs': {
-						url: 'https://go-docs.mastra.cloud/api/mcp/go-docs/sse',
-						transport: 'sse'
-					}
-				}
-			},
-			vscode: {
-				commandPalette: 'https://go-docs.mastra.cloud/api/mcp/go-docs/sse',
-				mcpJson: {
-					mcpServers: {
-						'go-docs': {
-							command: 'npx',
-							args: ['-y', 'mcp-remote', 'https://go-docs.mastra.cloud/api/mcp/go-docs/sse']
-						}
-					}
-				}
-			},
-			cli: 'npx -y mcp-remote https://go-docs.mastra.cloud/api/mcp/go-docs/mcp'
+		mastra: {
+			domain: 'go-docs.mastra.cloud',
+			slug: 'go-docs'
 		},
+		install: {},
 		tools: [
 			{ name: 'go-docs-search', description: 'Search Go packages and documentation.' },
 			{ name: 'go-docs-get', description: 'Retrieve Go package or function details.' }
@@ -281,6 +141,33 @@ export const mcps: MCP[] = [
 			'Search Go docs for net/http package',
 			'How to use context in Go?',
 			'Find Go examples for json.Marshal'
+		]
+	},
+	{
+		id: 'layerchart-docs',
+		name: 'layerchart-docs',
+		description:
+			'Mastra MCP server for searching and retrieving LayerChart documentation (Svelte charting library).',
+		tags: ['Svelte', 'Charts', 'LayerChart', 'Mastra', 'Documentation'],
+		githubUrl: 'https://github.com/Michael-Obele/layerchart-docs',
+		features: [
+			'LayerChart component documentation search',
+			'Chart example retrieval',
+			'API reference for visualization components'
+		],
+		mastra: {
+			domain: 'layerchart-docs.mastra.cloud',
+			slug: 'layerchart-docs'
+		},
+		install: {},
+		tools: [
+			{ name: 'layerchart-docs-search', description: 'Search LayerChart documentation.' },
+			{ name: 'layerchart-docs-get', description: 'Fetch details for LayerChart components.' }
+		],
+		exampleQueries: [
+			'How to create a BarChart with LayerChart?',
+			'Search LayerChart docs for PieChart examples',
+			'What are the props for the AreaChart component?'
 		]
 	}
 ];
