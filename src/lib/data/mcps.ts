@@ -23,12 +23,11 @@ export const mcps: MCP[] = [
 		tools: [
 			{
 				name: 'shadcn-svelte-list',
-				description: 'List all available components, blocks, charts, and documentation sections.'
+				description: 'List all available shadcn-svelte components, blocks, charts, and documentation sections.'
 			},
 			{
 				name: 'shadcn-svelte-get',
-				description:
-					'Retrieve detailed content, metadata, and code blocks for a specific component or doc.'
+				description: 'Retrieve detailed content, metadata, and code blocks for a specific component or doc.'
 			},
 			{
 				name: 'shadcn-svelte-icons',
@@ -82,8 +81,22 @@ export const mcps: MCP[] = [
 		},
 		install: {},
 		tools: [
-			{ name: 'tauri-docs-search', description: 'Search through Tauri documentation.' },
-			{ name: 'tauri-docs-get', description: 'Retrieve specific Tauri documentation pages.' }
+			{
+				name: 'list-sections',
+				description: 'List all available documentation sections and their use cases.'
+			},
+			{
+				name: 'get-page',
+				description: 'Retrieve the content of a specific documentation page.'
+			},
+			{
+				name: 'search',
+				description: 'Search the Tauri documentation for specific topics.'
+			},
+			{
+				name: 'get-plugin',
+				description: 'Get detailed information about a specific Tauri plugin.'
+			}
 		],
 		exampleQueries: [
 			'How do I set up a new Tauri project?',
@@ -108,8 +121,22 @@ export const mcps: MCP[] = [
 		},
 		install: {},
 		tools: [
-			{ name: 'rust-docs-search', description: 'Search official Rust documentation.' },
-			{ name: 'rust-docs-get', description: 'Fetch details for specific Rust modules or types.' }
+			{
+				name: 'search-crates',
+				description: 'Search for Rust crates on crates.io.'
+			},
+			{
+				name: 'get-crate-overview',
+				description: 'Get overview information for a specific Rust crate.'
+			},
+			{
+				name: 'get-item-docs',
+				description: 'Retrieve documentation for specific Rust items (functions, structs, etc.).'
+			},
+			{
+				name: 'list-modules',
+				description: 'List all modules in a Rust crate.'
+			}
 		],
 		exampleQueries: [
 			'Search Rust docs for Option enum',
@@ -161,8 +188,22 @@ export const mcps: MCP[] = [
 		},
 		install: {},
 		tools: [
-			{ name: 'layerchart-docs-search', description: 'Search LayerChart documentation.' },
-			{ name: 'layerchart-docs-get', description: 'Fetch details for LayerChart components.' }
+			{
+				name: 'list-docs',
+				description: 'List all available documentation pages and component routes.'
+			},
+			{
+				name: 'get-doc',
+				description: 'Get the documentation content for a specific route (text and code from GitHub).'
+			},
+			{
+				name: 'get-source',
+				description: 'Fetch raw source code for a documentation page or component implementation.'
+			},
+			{
+				name: 'search-docs',
+				description: 'Search for specific documentation and components within the LayerChart repository.'
+			}
 		],
 		exampleQueries: [
 			'How to create a BarChart with LayerChart?',
