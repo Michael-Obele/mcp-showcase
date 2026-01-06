@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { registries } from '$lib/data/registries';
 	import { mcps } from '$lib/data/mcps';
 	import * as Table from '$lib/components/ui/table';
@@ -8,61 +7,69 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Badge } from '$lib/components/ui/badge';
 	import { Lock, Unlock, ExternalLink, RefreshCcw, Terminal } from '@lucide/svelte';
+	import type { PageData } from './$types';
+	import { updateChecklistItem, login, logout } from '$lib/checklist.remote';
 
-	let isAuthorized = $state(false);
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
+
+	let isAuthorized = $state(data.authenticated);
 	let password = $state('');
-	let checklistData = $state<Record<string, Record<string, boolean>>>({});
+	let checklistData = $state<Record<string, Record<string, boolean>>>(data.checklistData || {});
 
-	// Persistence key
-	const STORAGE_KEY = 'mcp_showcase_checklist';
-	const AUTH_KEY = 'mcp_showcase_auth';
-
-	onMount(() => {
-		// Check auth
-		if (localStorage.getItem(AUTH_KEY) === 'true') {
-			isAuthorized = true;
-		}
-
-		// Load checklist
-		const saved = localStorage.getItem(STORAGE_KEY);
-		if (saved) {
-			try {
-				checklistData = JSON.parse(saved);
-			} catch (e) {
-				console.error('Failed to parse checklist data', e);
-			}
-		}
-
-		// Initialize missing data
-		mcps.forEach((mcp) => {
-			if (!checklistData[mcp.name]) {
-				checklistData[mcp.name] = {};
-			}
-			registries.forEach((reg) => {
-				if (checklistData[mcp.name][reg.name] === undefined) {
-					checklistData[mcp.name][reg.name] = false;
+	// Initialize missing data if authorized
+	$effect(() => {
+		if (isAuthorized) {
+			mcps.forEach((mcp) => {
+				if (!checklistData[mcp.name]) {
+					checklistData[mcp.name] = {};
 				}
+				registries.forEach((reg) => {
+					if (checklistData[mcp.name][reg.name] === undefined) {
+						checklistData[mcp.name][reg.name] = false;
+					}
+				});
 			});
-		});
+		}
 	});
 
-	function handleAuth() {
-		if (password === 'mcp-admin') {
+	async function handleAuth() {
+		try {
+			await login({ password });
 			isAuthorized = true;
-			localStorage.setItem(AUTH_KEY, 'true');
-		} else {
-			alert('Incorrect password. Hint: See the plan files.');
+			// Reload page to get fresh data from server
+			window.location.reload();
+		} catch (error) {
+			alert('Incorrect password.');
 		}
 	}
 
-	function toggleCheck(mcpName: string, regName: string) {
-		checklistData[mcpName][regName] = !checklistData[mcpName][regName];
-		localStorage.setItem(STORAGE_KEY, JSON.stringify(checklistData));
+	async function toggleCheck(mcpName: string, regName: string) {
+		const newValue = !checklistData[mcpName][regName];
+
+		// Optimistic update
+		checklistData[mcpName][regName] = newValue;
+
+		try {
+			await updateChecklistItem({ mcpName, registryName: regName, checked: newValue });
+		} catch (error) {
+			// Rollback on error
+			checklistData[mcpName][regName] = !newValue;
+			alert('Failed to update status on server.');
+		}
 	}
 
-	function resetAuth() {
-		localStorage.removeItem(AUTH_KEY);
-		isAuthorized = false;
+	async function resetAuth() {
+		try {
+			await logout();
+			isAuthorized = false;
+			window.location.reload();
+		} catch (error) {
+			alert('Failed to logout.');
+		}
 	}
 
 	const totalChecks = $derived(mcps.length * registries.length);

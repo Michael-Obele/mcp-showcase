@@ -19,7 +19,6 @@
 		Settings
 	} from '@lucide/svelte';
 	import { toast } from 'svelte-sonner';
-	import { ModeToggle } from '$lib/components/blocks';
 	import { Separator } from '$lib/components/ui/separator';
 	import { Switch } from '$lib/components/ui/switch';
 	import { Label } from '$lib/components/ui/label';
@@ -77,9 +76,6 @@
 {/snippet}
 
 <div class="relative container mx-auto px-4 py-8">
-	<div class="absolute top-8 right-4">
-		<ModeToggle />
-	</div>
 	<header class="mb-12 text-center">
 		<h1 class="mb-4 text-4xl font-bold tracking-tight text-foreground lg:text-5xl">
 			Server<span class="text-primary">Showcase</span>

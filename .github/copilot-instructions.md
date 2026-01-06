@@ -1,88 +1,78 @@
-# MCP Showcase - AI Agent Instructions
-
-## Project Overview
-
-This is **ServerShowcase**, a SvelteKit portfolio website for displaying Model Context Protocol (MCP) servers. Features include a searchable gallery of MCP cards, detailed views with installation commands for multiple AI tools (Claude Desktop, Cursor, Windsurf), and submission tracking across registries (Smithery, Glama, Pulse, etc.).
+# GitHub Copilot Instructions - Standard Project Template
 
 ## Tech Stack & Architecture
 
-- **Framework**: SvelteKit 2 with Svelte 5 (runes for state management)
-- **Styling**: Tailwind CSS v4 (via `@tailwindcss/vite`)
-- **UI**: shadcn-svelte components (Bits UI) with custom "Lovely Docs" theme (black bg, gold/amber accents)
-- **Package Manager**: Bun (use `bunx` for CLI tools like shadcn init)
-- **Data**: Local TypeScript/JSON files for MCP server definitions
+- **Runtime & Tooling**: Bun (`bun`, `bunx`) is the preferred package manager and task runner.
+- **Framework**: SvelteKit 5 (using Runes: `$state`, `$props`, `$derived`, `$effect`).
+- **Styling**: Tailwind CSS v4. Prefer semantic classes (e.g., `btn-primary`, `text-muted-foreground`).
+- **Database**: Prisma ORM with PostgreSQL. Use a singleton client (typically at `$lib/prisma` or `$lib/server/db`).
+- **Authentication**: Better Auth (preferred) or WorkOS.
+- **Icons**: Use `@lucide/svelte` (NOT `lucide-svelte`). Import icons as components: `import { IconName } from '@lucide/svelte'`.
+- **Components**: shadcn-svelte primitives and Bits UI.
 
-## Key Patterns & Conventions
+## Coding Conventions
 
-### Component Structure
+### Quality Gate
 
-- Use shadcn-svelte components from `$lib/components/ui/` (add via `bunx shadcn-svelte@latest add <component>`)
-- Use `@lucide/svelte` for icons (not `lucide-svelte` or `lucide-icons`)
-- Apply custom styling with `cn()` utility from `$lib/utils.ts` for Tailwind class merging
-- Follow "Lovely Docs" design: black backgrounds, gold highlights (`#FFB800`), white text, subtle borders (`border-white/10`)
+- **Proactive Checking**: Run `bun check` immediately after substantive edits to catch regressions or type errors.
+- **Error Handling**: Only warnings can be ignored; errors must be fixed immediately. Use `<svelte:boundary>` for async operations to handle loading and error states gracefully.
 
-### State Management
+### Svelte 5 Runes
 
-- Use Svelte 5 runes: `$state()` for reactive variables, `$derived()` for computed values
-- Example filter implementation:
+Always use Svelte 5 runes for reactivity. Never use legacy `export let` or `$:`.
 
-  ```svelte
-  <script>
-  	let searchQuery = $state('');
-  	let selectedTags = $state<string[]>([]);
+- `$state(value)`: Declare reactive state. Use `$state.raw` for large objects/arrays that don't need deep reactivity.
+- `$props()`: Receive component props. Destructure for clarity: `let { prop1, prop2 } = $props();`.
+- `$derived(expression)`: Declare derived state. Use `$derived.by(() => ...)` for complex logic.
+- `$effect(() => ...)`: Handle side effects (DOM, timers, etc.). Avoid for state synchronization.
+- `$bindable()`: Mark a prop as bindable for two-way communication.
+- `$inspect(value)`: Debug reactive state in development.
+- **Events**: Use modern event attributes (e.g., `onclick`, `onsubmit`, `onchange`) directly on elements.
 
-  	const filteredMCPs = $derived(() => {
-  		return allMCPs.filter(
-  			(mcp) =>
-  				mcp.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-  				(selectedTags.length === 0 || selectedTags.some((tag) => mcp.tags.includes(tag)))
-  		);
-  	});
-  </script>
-  ```
+### SvelteKit State Management
 
-### Installation Commands
+- Prefer `$app/state` (e.g., `import { page } from '$app/state'`) over legacy `$app/stores` for accessing `page`, `navigating`, `updated`, etc.
 
-- Generate tool-specific configs (Claude JSON, Cursor settings) using nested `Tabs` components
-- Include package manager variants (bun, npm, pnpm, yarn) in command switchers
-- Use `Sonner` for copy-to-clipboard confirmations
+### Data Fetching & Mutations (Remote Functions)
 
-### File Organization
+Default to **Remote Functions** (experimental `@sveltejs/kit` features or standard patterns) over `+page.server.ts` actions for most mutations.
 
-- MCP data: Define in `$lib/data/mcps.ts` as TypeScript interfaces
-- Components: `$lib/components/` (custom) and `$lib/components/ui/` (shadcn)
-- Routes: Standard SvelteKit structure in `src/routes/`
-- Plan docs: `plan/` folder for project planning and inspiration
+- **Location**: Place remote functions in `src/lib/remote/` with the `.remote.ts` extension.
+- **Barrel Exports**: Use `src/lib/remote/index.ts` to re-export all functions individually (not `export *`) to allow for better documentation and discovery.
+- **Flavors**:
+  - `query`: For reading dynamic data. Supports `refresh()`, `loading`, `error`.
+  - `form`: For mutations via `<form>`. Supports progressive enhancement via `enhance`.
+  - `command`: For mutations triggered by scripts/buttons without a form.
+  - `prerender`: For data that can be fetched at build time.
+- **Validation**: Always validate inputs using a Standard Schema library, preferably **Valibot**.
+- **Client-side Validation**: Use `preflight(schema)` for client-side validation before submission where applicable.
+- **Efficiency**: Use `query.batch` for multiple related fetches and `submit().updates(query)` for efficient post-mutation UI updates.
 
-## Development Workflows
+### Database Access
 
-### Setup & Component Addition
+- Default to using a singleton Prisma client.
+- Schema changes: Use `bunx prisma db push` for rapid prototyping and `bunx prisma migrate dev` for stable environments.
 
-```bash
-# Add shadcn components
-bunx shadcn-svelte@latest add card badge button tabs sonner drawer table
-```
+### Styling & UI Design
 
-### Code Quality
+- **Gradients**: NEVER use gradients; prefer solid colors, clean layouts, and professional minimalist aesthetics.
+- **Tailwind v4**: Use semantic tokens from the CSS configuration. Avoid hardcoded HSL/Hex strings in components.
+- **Responsive**: Use standard Tailwind responsive prefixes (e.g., `lg:flex-row`).
+- **Utility**: Use a `cn` utility (clsx + tailwind-merge) for conditional class merging.
 
-- **Type Checking**: `bun run check` (svelte-check with TypeScript)
-- Always run `bun run check` after every edit to ensure type safety and catch errors early and fix them promptly.
+## Key Files & Directories Pattern
 
-### Deployment
+- `src/lib/remote/`: Logic for data fetching and mutations.
+- `src/lib/components/ui/`: shadcn-svelte / primitive UI components.
+- `src/routes/`: Router logic. Use `+page.server.ts` or `+layout.server.ts` ONLY for initial `load` functions.
+- `static/`: Static assets.
 
-Target: Vercel/Netlify with Bun runtime. Use `@sveltejs/adapter-auto` or switch to specific adapter.
+## Common Workflows
 
-## Key Files to Reference
+- **Development**: `bun run dev`
+- **Type Checking**: `bun run check`
 
-- `plan/index.md`: Project goals and features
-- `plan/notes.md`: Component strategy and Svelte 5 snippets
-- `plan/platforms.md`: Registry submission checklist
-- `components.json`: shadcn-svelte configuration
-- `src/lib/utils.ts`: Utility functions and type helpers
+## AI Agent Integration
 
-## Common Patterns
-
-- Prefix section headers with `>_` for developer aesthetic
-- Use `Badge` components for tags (language, status)
-- Implement search/filter with reactive derived state
-- Handle installation configs as JSON objects with tool-specific formatting
+- **Memory MCP**: Persist useful context by writing to Memory MCP during work to maintain consistency across sessions.
+- **Documentation**: Use `mcp_svelte_get-documentation` for the latest Svelte 5/Kit logic and `mcp_svelte_svelte-autofixer` to validate components before finalizing.
