@@ -107,11 +107,11 @@
 								class="h-5 w-5 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100"
 							/>
 						</div>
-						<Card.Description class="mt-2 line-clamp-2 min-h-[2.5rem]">
+						<Card.Description class="mt-2 line-clamp-2 min-h-10">
 							{mcp.description}
 						</Card.Description>
 					</Card.Header>
-					<Card.Content class="flex-grow">
+					<Card.Content class="grow">
 						<div class="flex flex-wrap gap-2">
 							{#each mcp.tags as tag (tag)}
 								<Badge
@@ -136,7 +136,7 @@
 
 	<Dialog.Root bind:open={isDialogOpen}>
 		<Dialog.Content
-			class="flex min-h-[500px] flex-col gap-0 border-primary/20 bg-background p-0 sm:max-h-[90vh] sm:max-w-4xl"
+			class="flex min-h-125 flex-col gap-0 border-primary/20 bg-background p-0 sm:max-h-[90vh] sm:max-w-4xl"
 		>
 			{#if selectedMcp}
 				<div class="scrollbar-thin scrollbar-thumb-primary/20 flex-1 overflow-y-auto p-6">
