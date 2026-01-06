@@ -16,9 +16,9 @@
 
 	let { data }: Props = $props();
 
-	let isAuthorized = $state(data.authenticated);
+	let isAuthorized = $derived(data.authenticated);
 	let password = $state('');
-	let checklistData = $state<Record<string, Record<string, boolean>>>(data.checklistData || {});
+	let checklistData = $derived<Record<string, Record<string, boolean>>>(data.checklistData || {});
 
 	// Initialize missing data if authorized
 	$effect(() => {

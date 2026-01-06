@@ -27,7 +27,7 @@
 	let searchQuery = $state('');
 	let selectedMcp = $state<MCP | null>(null);
 	let isDialogOpen = $state(false);
-	let preferredTransport = $state<'sse' | 'http'>('sse');
+	let preferredTransport = $state<'sse' | 'http'>('http');
 
 	let installConfig = $derived(
 		selectedMcp ? getFullInstallConfig(selectedMcp, preferredTransport) : null
