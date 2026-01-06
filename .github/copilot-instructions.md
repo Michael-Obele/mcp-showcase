@@ -17,7 +17,7 @@ This is **ServerShowcase**, a SvelteKit portfolio website for displaying Model C
 ### Component Structure
 
 - Use shadcn-svelte components from `$lib/components/ui/` (add via `bunx shadcn-svelte@latest add <component>`)
-- Use `@lucide/svelte` for icons (not `lucide-svelte`)
+- Use `@lucide/svelte` for icons (not `lucide-svelte` or `lucide-icons`)
 - Apply custom styling with `cn()` utility from `$lib/utils.ts` for Tailwind class merging
 - Follow "Lovely Docs" design: black backgrounds, gold highlights (`#FFB800`), white text, subtle borders (`border-white/10`)
 
@@ -61,17 +61,12 @@ This is **ServerShowcase**, a SvelteKit portfolio website for displaying Model C
 ```bash
 # Add shadcn components
 bunx shadcn-svelte@latest add card badge button tabs sonner drawer table
-
-# Development server
-bun run dev
-
-# Build & preview
-bun run build && bun run preview
 ```
 
 ### Code Quality
 
 - **Type Checking**: `bun run check` (svelte-check with TypeScript)
+- Always run `bun run check` after every edit to ensure type safety and catch errors early and fix them promptly.
 
 ### Deployment
 
