@@ -30,39 +30,39 @@ We will implement this using nested or parallel `Tabs.Root` components.
 
 ````html
 <script lang="ts">
-  import * as Tabs from "$lib/components/ui/tabs/index.js";
+	import * as Tabs from '$lib/components/ui/tabs/index.js';
 
-  let client = $state("cursor");
-  let pm = $state("bun");
+	let client = $state('cursor');
+	let pm = $state('bun');
 
-  const installCmd = $derived(() => {
-    const commands = {
-      bun: "bunx mcp-remote https://shadcn-svelte.mastra.cloud/api/mcp/shadcn/sse",
-      npm: "npx mcp-remote https://shadcn-svelte.mastra.cloud/api/mcp/shadcn/sse",
-      pnpm: "pnpm dlx mcp-remote https://shadcn-svelte.mastra.cloud/api/mcp/shadcn/sse",
-      yarn: "yarn dlx mcp-remote https://shadcn-svelte.mastra.cloud/api/mcp/shadcn/sse",
-    };
-    return commands[pm];
-  });
+	const installCmd = $derived(() => {
+		const commands = {
+			bun: 'bunx mcp-remote https://shadcn-svelte.mastra.cloud/api/mcp/shadcn/sse',
+			npm: 'npx mcp-remote https://shadcn-svelte.mastra.cloud/api/mcp/shadcn/sse',
+			pnpm: 'pnpm dlx mcp-remote https://shadcn-svelte.mastra.cloud/api/mcp/shadcn/sse',
+			yarn: 'yarn dlx mcp-remote https://shadcn-svelte.mastra.cloud/api/mcp/shadcn/sse'
+		};
+		return commands[pm];
+	});
 </script>
 
 <Tabs.Root bind:value="{pm}">
-  <!-- Package manager triggers -->
+	<!-- Package manager triggers -->
 </Tabs.Root>
 
 <Tabs.Root bind:value="{client}">
-  <!-- AI client triggers with icons -->
+	<!-- AI client triggers with icons -->
 </Tabs.Root>
 
 <div class="code-block">
-  <code>{installCmd()}</code>
-  <CopyButton text="{installCmd()}" />
+	<code>{installCmd()}</code>
+	<CopyButton text="{installCmd()}" />
 </div>
 
 <!-- Example: add the hosted shadcn-svelte MCP server from our project (see https://github.com/Michael-Obele/shadcn-svelte-mcp/blob/main/README.md) -->
 <div class="card mt-4">
-  ```json { "mcpServers": { "shadcn-svelte": { "type": "sse", "url":
-  "https://shadcn-svelte.mastra.cloud/api/mcp/shadcn/sse" } } }
+	```json { "mcpServers": { "shadcn-svelte": { "type": "sse", "url":
+	"https://shadcn-svelte.mastra.cloud/api/mcp/shadcn/sse" } } }
 </div>
 ````
 

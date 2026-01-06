@@ -22,15 +22,15 @@ Each MCP should have a helper component that generates the correct configuration
 
 ```json
 {
-  "mcpServers": {
-    "my-cool-server": {
-      "command": "npx",
-      "args": ["-y", "@user/my-cool-server"],
-      "env": {
-        "API_KEY": "your-key-here"
-      }
-    }
-  }
+	"mcpServers": {
+		"my-cool-server": {
+			"command": "npx",
+			"args": ["-y", "@user/my-cool-server"],
+			"env": {
+				"API_KEY": "your-key-here"
+			}
+		}
+	}
 }
 ```
 
@@ -42,15 +42,16 @@ Using Svelte 5 runes for state management of filters and the checklist.
 
 ```svelte
 <script>
-  let searchQuery = $state("");
-  let selectedTags = $state([]);
+	let searchQuery = $state('');
+	let selectedTags = $state([]);
 
-  const filteredMCPs = $derived(() => {
-    return allMCPs.filter(mcp =>
-      mcp.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      (selectedTags.length === 0 || selectedTags.some(tag => mcp.tags.includes(tag)))
-    );
-  });
+	const filteredMCPs = $derived(() => {
+		return allMCPs.filter(
+			(mcp) =>
+				mcp.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+				(selectedTags.length === 0 || selectedTags.some((tag) => mcp.tags.includes(tag)))
+		);
+	});
 </script>
 ```
 
