@@ -5,7 +5,7 @@
 	import { Badge } from '$lib/components/ui/badge';
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
-	import * as Drawer from '$lib/components/ui/drawer';
+	import * as Dialog from '$lib/components/ui/dialog';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { ScrollArea } from '$lib/components/ui/scroll-area';
 	import {
@@ -24,7 +24,7 @@
 
 	let searchQuery = $state('');
 	let selectedMcp = $state<MCP | null>(null);
-	let isDrawerOpen = $state(false);
+	let isDialogOpen = $state(false);
 
 	let filteredMcps = $derived(
 		mcps.filter((mcp) => {
@@ -37,9 +37,9 @@
 		})
 	);
 
-	function openDrawer(mcp: MCP) {
+	function openDialog(mcp: MCP) {
 		selectedMcp = mcp;
-		isDrawerOpen = true;
+		isDialogOpen = true;
 	}
 
 	function copyToClipboard(text: string) {
@@ -95,7 +95,7 @@
 		{#each filteredMcps as mcp (mcp.id)}
 			<button
 				class="group flex h-full cursor-pointer flex-col text-left transition-all hover:scale-[1.02] focus:outline-none"
-				onclick={() => openDrawer(mcp)}
+				onclick={() => openDialog(mcp)}
 			>
 				<Card.Root
 					class="flex h-full w-full flex-col border-border bg-background transition-colors hover:border-primary/50 hover:bg-accent/5"
@@ -134,13 +134,15 @@
 		{/each}
 	</div>
 
-	<Drawer.Root bind:open={isDrawerOpen}>
-		<Drawer.Content class="h-[85vh] overflow-hidden border-primary/20 bg-background">
+	<Dialog.Root bind:open={isDialogOpen}>
+		<Dialog.Content
+			class="flex min-h-[500px] flex-col gap-0 border-primary/20 bg-background p-0 sm:max-h-[90vh] sm:max-w-4xl"
+		>
 			{#if selectedMcp}
-				<div class="mx-auto w-full max-w-4xl p-6">
-					<Drawer.Header class="px-0">
+				<div class="scrollbar-thin scrollbar-thumb-primary/20 flex-1 overflow-y-auto p-6">
+					<Dialog.Header class="px-0">
 						<div class="mb-2 flex items-center justify-between">
-							<Drawer.Title class="text-3xl font-bold text-primary">{selectedMcp.name}</Drawer.Title
+							<Dialog.Title class="text-3xl font-bold text-primary">{selectedMcp.name}</Dialog.Title
 							>
 							<div class="flex gap-2">
 								<Button
@@ -155,192 +157,190 @@
 								</Button>
 							</div>
 						</div>
-						<Drawer.Description class="text-lg">
+						<Dialog.Description class="text-lg">
 							{selectedMcp.description}
-						</Drawer.Description>
-					</Drawer.Header>
+						</Dialog.Description>
+					</Dialog.Header>
 
-					<ScrollArea class="h-full pr-4">
-						<div class="space-y-8 pb-8">
+					<div class="mt-8 space-y-8 pb-8">
+						<section>
+							<h3 class="mb-3 flex items-center gap-2 text-lg font-semibold text-foreground">
+								<Check class="h-5 w-5 text-primary" />
+								Features
+							</h3>
+							<ul class="grid gap-2 text-muted-foreground sm:grid-cols-2">
+								{#each selectedMcp.features as feature (feature)}
+									<li class="flex items-start gap-2">
+										<div class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/60"></div>
+										<span>{feature}</span>
+									</li>
+								{/each}
+							</ul>
+						</section>
+
+						{#if selectedMcp.tools}
 							<section>
 								<h3 class="mb-3 flex items-center gap-2 text-lg font-semibold text-foreground">
-									<Check class="h-5 w-5 text-primary" />
-									Features
+									<Zap class="h-5 w-5 text-primary" />
+									Available Tools
 								</h3>
-								<ul class="grid gap-2 text-muted-foreground sm:grid-cols-2">
-									{#each selectedMcp.features as feature (feature)}
-										<li class="flex items-start gap-2">
-											<div class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/60"></div>
-											<span>{feature}</span>
+								<div class="grid gap-3 sm:grid-cols-2">
+									{#each selectedMcp.tools as tool (tool.name)}
+										<div class="rounded-lg border border-border/50 bg-muted/20 p-3">
+											<div class="font-mono text-sm font-semibold text-primary">{tool.name}</div>
+											<div class="mt-1 text-sm text-muted-foreground">{tool.description}</div>
+										</div>
+									{/each}
+								</div>
+							</section>
+						{/if}
+
+						{#if selectedMcp.prompts}
+							<section>
+								<h3 class="mb-3 flex items-center gap-2 text-lg font-semibold text-foreground">
+									<MessageSquare class="h-5 w-5 text-primary" />
+									Guided Prompts
+								</h3>
+								<div class="grid gap-3 sm:grid-cols-2">
+									{#each selectedMcp.prompts as prompt (prompt.name)}
+										<div class="rounded-lg border border-border/50 bg-muted/20 p-3">
+											<div class="font-mono text-sm font-semibold text-primary">
+												{prompt.name}
+											</div>
+											<div class="mt-1 text-sm text-muted-foreground">{prompt.description}</div>
+										</div>
+									{/each}
+								</div>
+							</section>
+						{/if}
+
+						{#if selectedMcp.exampleQueries}
+							<section>
+								<h3 class="mb-3 flex items-center gap-2 text-lg font-semibold text-foreground">
+									<Search class="h-5 w-5 text-primary" />
+									Example Usage
+								</h3>
+								<ul class="space-y-2 text-muted-foreground">
+									{#each selectedMcp.exampleQueries as query (query)}
+										<li class="flex items-start gap-3 italic">
+											<span class="text-primary/40">"</span>
+											<span>{query}</span>
+											<span class="text-primary/40">"</span>
 										</li>
 									{/each}
 								</ul>
 							</section>
+						{/if}
 
-							{#if selectedMcp.tools}
-								<section>
-									<h3 class="mb-3 flex items-center gap-2 text-lg font-semibold text-foreground">
-										<Zap class="h-5 w-5 text-primary" />
-										Available Tools
-									</h3>
-									<div class="grid gap-3 sm:grid-cols-2">
-										{#each selectedMcp.tools as tool (tool.name)}
-											<div class="rounded-lg border border-border/50 bg-muted/20 p-3">
-												<div class="font-mono text-sm font-semibold text-primary">{tool.name}</div>
-												<div class="mt-1 text-sm text-muted-foreground">{tool.description}</div>
-											</div>
-										{/each}
-									</div>
-								</section>
-							{/if}
+						<Separator class="bg-border/50" />
 
-							{#if selectedMcp.prompts}
-								<section>
-									<h3 class="mb-3 flex items-center gap-2 text-lg font-semibold text-foreground">
-										<MessageSquare class="h-5 w-5 text-primary" />
-										Guided Prompts
-									</h3>
-									<div class="grid gap-3 sm:grid-cols-2">
-										{#each selectedMcp.prompts as prompt (prompt.name)}
-											<div class="rounded-lg border border-border/50 bg-muted/20 p-3">
-												<div class="font-mono text-sm font-semibold text-primary">
-													{prompt.name}
-												</div>
-												<div class="mt-1 text-sm text-muted-foreground">{prompt.description}</div>
-											</div>
-										{/each}
-									</div>
-								</section>
-							{/if}
-
-							{#if selectedMcp.exampleQueries}
-								<section>
-									<h3 class="mb-3 flex items-center gap-2 text-lg font-semibold text-foreground">
-										<Search class="h-5 w-5 text-primary" />
-										Example Usage
-									</h3>
-									<ul class="space-y-2 text-muted-foreground">
-										{#each selectedMcp.exampleQueries as query (query)}
-											<li class="flex items-start gap-3 italic">
-												<span class="text-primary/40">"</span>
-												<span>{query}</span>
-												<span class="text-primary/40">"</span>
-											</li>
-										{/each}
-									</ul>
-								</section>
-							{/if}
-
-							<Separator class="bg-border/50" />
-
-							<section>
-								<h3 class="mb-4 flex items-center gap-2 text-lg font-semibold text-foreground">
-									<Settings class="h-5 w-5 text-primary" />
-									Installation
-								</h3>
-								<Tabs.Root value="cursor" class="w-full">
-									<Tabs.List
-										class="w-full justify-start overflow-x-auto border border-border/50 bg-muted/20 p-1"
+						<section>
+							<h3 class="mb-4 flex items-center gap-2 text-lg font-semibold text-foreground">
+								<Settings class="h-5 w-5 text-primary" />
+								Installation
+							</h3>
+							<Tabs.Root value="cursor" class="w-full">
+								<Tabs.List
+									class="w-full justify-start overflow-x-auto border border-border/50 bg-muted/20 p-1"
+								>
+									<Tabs.Trigger
+										value="cursor"
+										class="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+										>Cursor</Tabs.Trigger
 									>
-										<Tabs.Trigger
-											value="cursor"
-											class="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-											>Cursor</Tabs.Trigger
-										>
-										<Tabs.Trigger
-											value="vscode"
-											class="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-											>VS Code</Tabs.Trigger
-										>
-										<Tabs.Trigger
-											value="claude"
-											class="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-											>Claude</Tabs.Trigger
-										>
-										<Tabs.Trigger
-											value="windsurf"
-											class="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-											>Windsurf</Tabs.Trigger
-										>
-										<Tabs.Trigger
-											value="cli"
-											class="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-											>CLI</Tabs.Trigger
-										>
-									</Tabs.List>
+									<Tabs.Trigger
+										value="vscode"
+										class="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+										>VS Code</Tabs.Trigger
+									>
+									<Tabs.Trigger
+										value="claude"
+										class="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+										>Claude</Tabs.Trigger
+									>
+									<Tabs.Trigger
+										value="windsurf"
+										class="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+										>Windsurf</Tabs.Trigger
+									>
+									<Tabs.Trigger
+										value="cli"
+										class="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+										>CLI</Tabs.Trigger
+									>
+								</Tabs.List>
 
-									<Tabs.Content value="cursor" class="mt-4">
-										<p class="mb-2 text-sm text-muted-foreground">
-											Add as a SSE type MCP server in Cursor settings:
-										</p>
-										{@render codeCpy(formatConfig(selectedMcp.install.cursor))}
-									</Tabs.Content>
+								<Tabs.Content value="cursor" class="mt-4">
+									<p class="mb-2 text-sm text-muted-foreground">
+										Add as a SSE type MCP server in Cursor settings:
+									</p>
+									{@render codeCpy(formatConfig(selectedMcp.install.cursor))}
+								</Tabs.Content>
 
-									<Tabs.Content value="vscode" class="mt-4">
-										<Tabs.Root value="palette" class="w-full">
-											<Tabs.List class="grid w-full grid-cols-2 bg-muted/40 p-1">
-												<Tabs.Trigger value="palette">Command Palette</Tabs.Trigger>
-												<Tabs.Trigger value="json">mcp.json</Tabs.Trigger>
-											</Tabs.List>
-											<Tabs.Content value="palette" class="mt-4">
-												<p class="mb-2 text-sm text-muted-foreground">
-													Run <strong>MCP: Add Server</strong> (Cmd/Ctrl+Shift+P) and paste:
-												</p>
-												{@render codeCpy(selectedMcp.install.vscode.commandPalette)}
-											</Tabs.Content>
-											<Tabs.Content value="json" class="mt-4">
-												<p class="mb-2 text-sm text-muted-foreground">
-													Add to your <strong>.vscode/mcp.json</strong> or user-level config:
-												</p>
-												{@render codeCpy(formatConfig(selectedMcp.install.vscode.mcpJson))}
-											</Tabs.Content>
-										</Tabs.Root>
-									</Tabs.Content>
+								<Tabs.Content value="vscode" class="mt-4">
+									<Tabs.Root value="palette" class="w-full">
+										<Tabs.List class="grid w-full grid-cols-2 bg-muted/40 p-1">
+											<Tabs.Trigger value="palette">Command Palette</Tabs.Trigger>
+											<Tabs.Trigger value="json">mcp.json</Tabs.Trigger>
+										</Tabs.List>
+										<Tabs.Content value="palette" class="mt-4">
+											<p class="mb-2 text-sm text-muted-foreground">
+												Run <strong>MCP: Add Server</strong> (Cmd/Ctrl+Shift+P) and paste:
+											</p>
+											{@render codeCpy(selectedMcp.install.vscode.commandPalette)}
+										</Tabs.Content>
+										<Tabs.Content value="json" class="mt-4">
+											<p class="mb-2 text-sm text-muted-foreground">
+												Add to your <strong>.vscode/mcp.json</strong> or user-level config:
+											</p>
+											{@render codeCpy(formatConfig(selectedMcp.install.vscode.mcpJson))}
+										</Tabs.Content>
+									</Tabs.Root>
+								</Tabs.Content>
 
-									<Tabs.Content value="claude" class="mt-4">
-										<Tabs.Root value="config" class="w-full">
-											<Tabs.List class="grid w-full grid-cols-2 bg-muted/40 p-1">
-												<Tabs.Trigger value="config">Config File</Tabs.Trigger>
-												<Tabs.Trigger value="cli">CLI Command</Tabs.Trigger>
-											</Tabs.List>
-											<Tabs.Content value="config" class="mt-4">
-												<p class="mb-2 text-sm text-muted-foreground">
-													Add to your <strong>claude_desktop_config.json</strong>:
-												</p>
-												{@render codeCpy(formatConfig(selectedMcp.install.claude.config))}
-											</Tabs.Content>
-											<Tabs.Content value="cli" class="mt-4">
-												<p class="mb-2 text-sm text-muted-foreground">
-													Run this command for <strong>Claude Code</strong>:
-												</p>
-												{@render codeCpy(selectedMcp.install.claude.command || '')}
-											</Tabs.Content>
-										</Tabs.Root>
-									</Tabs.Content>
+								<Tabs.Content value="claude" class="mt-4">
+									<Tabs.Root value="config" class="w-full">
+										<Tabs.List class="grid w-full grid-cols-2 bg-muted/40 p-1">
+											<Tabs.Trigger value="config">Config File</Tabs.Trigger>
+											<Tabs.Trigger value="cli">CLI Command</Tabs.Trigger>
+										</Tabs.List>
+										<Tabs.Content value="config" class="mt-4">
+											<p class="mb-2 text-sm text-muted-foreground">
+												Add to your <strong>claude_desktop_config.json</strong>:
+											</p>
+											{@render codeCpy(formatConfig(selectedMcp.install.claude.config))}
+										</Tabs.Content>
+										<Tabs.Content value="cli" class="mt-4">
+											<p class="mb-2 text-sm text-muted-foreground">
+												Run this command for <strong>Claude Code</strong>:
+											</p>
+											{@render codeCpy(selectedMcp.install.claude.command || '')}
+										</Tabs.Content>
+									</Tabs.Root>
+								</Tabs.Content>
 
-									<Tabs.Content value="windsurf" class="mt-4">
-										<p class="mb-2 text-sm text-muted-foreground">Add to Windsurf configuration:</p>
-										{@render codeCpy(formatConfig(selectedMcp.install.windsurf))}
-									</Tabs.Content>
+								<Tabs.Content value="windsurf" class="mt-4">
+									<p class="mb-2 text-sm text-muted-foreground">Add to Windsurf configuration:</p>
+									{@render codeCpy(formatConfig(selectedMcp.install.windsurf))}
+								</Tabs.Content>
 
-									<Tabs.Content value="cli" class="mt-4">
-										<p class="mb-2 text-sm text-muted-foreground">Test the MCP server directly:</p>
-										{@render codeCpy(selectedMcp.install.cli)}
-									</Tabs.Content>
-								</Tabs.Root>
-							</section>
-						</div>
-					</ScrollArea>
-
-					<Drawer.Footer class="px-0 pt-4">
-						<Button
-							variant="outline"
-							class="w-full border-border sm:w-auto"
-							onclick={() => (isDrawerOpen = false)}>Close</Button
-						>
-					</Drawer.Footer>
+								<Tabs.Content value="cli" class="mt-4">
+									<p class="mb-2 text-sm text-muted-foreground">Test the MCP server directly:</p>
+									{@render codeCpy(selectedMcp.install.cli)}
+								</Tabs.Content>
+							</Tabs.Root>
+						</section>
+					</div>
 				</div>
+
+				<Dialog.Footer class="border-t border-border/50 px-6 py-4">
+					<Button
+						variant="outline"
+						class="w-full border-border sm:w-auto"
+						onclick={() => (isDialogOpen = false)}>Close</Button
+					>
+				</Dialog.Footer>
 			{/if}
-		</Drawer.Content>
-	</Drawer.Root>
+		</Dialog.Content>
+	</Dialog.Root>
 </div>
