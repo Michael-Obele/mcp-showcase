@@ -2,32 +2,36 @@
 
 ## Phase 1: Setup & Scaffolding
 
-- [ ] Initialize SvelteKit project (`bunx sv create mcp-showcase`)
-- [ ] Add Tailwind CSS (`bunx sv add tailwindcss`)
-- [ ] Install shadcn-svelte CLI (`npx shadcn-svelte@latest init`)
-- [ ] Setup core layout (Nav, Sidebar, Footer)
+- [x] Initialize SvelteKit project
+- [x] Add Tailwind CSS
+- [x] Install shadcn-svelte components
+- [x] Setup core layout (Nav, Footer) with "Lovely Docs" aesthetic
 
 ## Phase 2: Data & Gallery
 
-- [ ] Define the `MCP` data structure (TypeScript interface)
-- [ ] Create a local JSON/TS file with current MCP details
-- [ ] Build the `MCPCard` component using `Card`, `Badge`, and `Button`
-- [ ] Implement search and category filtering using Svelte 5 runes
+- [x] Define the `MCP` data structure (TypeScript interface)
+- [x] Create a local TS file with current MCP details
+- [x] Build the `MCPCard` component
+- [x] Implement search and category filtering using Svelte 5 runes
 
 ## Phase 3: Detail View & Install Commands
 
-- [ ] Build a Detail Drawer using `Drawer` (shadcn)
-- [ ] Implement the `ConfigTabs` component to show Claude/Cursor/Windsurf configs
-- [ ] Add "Copy" buttons with `Sonner` toast notifications
-- [ ] Fetch GitHub stars/metadata using the GitHub API (optional)
+- [x] Build a Detail Dialog (switched from Drawer for better scrolling)
+- [x] Implement the `ConfigTabs` component (Claude, Cursor, VS Code, Windsurf, Zed, CLI)
+- [x] Add "Copy" buttons with `Sonner` toast notifications
+- [x] Add platform-specific info for Codex and Gemini mcp-remote
 
 ## Phase 4: Showcase Checklist
 
-- [ ] Create a "Submission Manager" page/section
-- [ ] Implement the platform checklist using `Table` and `Checkbox`
-- [ ] Add persistence (Local Storage or a small DB like LibSQL/Prisma)
+- [x] Create a "Submission Manager" route (`/checklist`)
+- [x] Implement the platform checklist using `Table` and `Checkbox`
+- [x] Add persistence (Local Storage) and lightweight "secret" protection
 
 ## Phase 5: Deployment
+
+- [ ] Build & Preview test
+- [ ] Push to GitHub
+- [ ] Deploy to Vercel/Netlify with Bun runtime
 
 - [ ] Performance audit (Lighthouse)
 - [ ] Deploy to Vercel/Netlify
