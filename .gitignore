@@ -23,3 +23,12 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 /../generated/prisma
+
+# Local development tools and binaries
+bin/
+git-cliff*
+*.tar.gz
+
+# Logs
+*.log
+npm-debug.log*
