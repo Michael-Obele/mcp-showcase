@@ -27,6 +27,7 @@
 - Add example environment variables and license file
 - Add changelog file to document project updates
 - Add automated changelog generation with GitHub Actions
+- Update changelog to use dates instead of versions
 ### Miscellaneous Tasks
 
 - Prepare mcps.ts for future development
