@@ -59,6 +59,16 @@ Default to **Remote Functions** (experimental `@sveltejs/kit` features or standa
 - **Tailwind v4**: Use semantic tokens from the CSS configuration. Avoid hardcoded HSL/Hex strings in components.
 - **Responsive**: Use standard Tailwind responsive prefixes (e.g., `lg:flex-row`).
 - **Utility**: Use a `cn` utility (clsx + tailwind-merge) for conditional class merging.
+- **Sharp Edges**: ALL items must have a border radius of zero (`rounded-none`). No rounded corners on cards, buttons, or divs.
+- **Dotted Underlines**: Use dotted lines for all underlines (`decoration-dotted`, `underline`).
+
+### Example Usage (Quote Section)
+
+When displaying example queries or quotes, use a revamped minimalist blockquote style:
+- Sharp edges (`rounded-none`).
+- Dotted border-l-4 or similar.
+- Dotted underlines for the label.
+- High-contrast colors with a subtle background.
 
 ## Key Files & Directories Pattern
 
