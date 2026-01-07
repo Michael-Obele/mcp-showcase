@@ -2,21 +2,27 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A SvelteKit 5 starter / showcase app with Vite, Tailwind CSS, Prisma, and a small set of UI components and MCP examples.
+A SvelteKit 5 starter / showcase app with Vite, Tailwind CSS v4, Prisma, and a small set of UI components plus MCP-backed examples.
 
 ## Features
 
-- **SvelteKit 5**: Latest SvelteKit with runes and modern patterns
-- **Tailwind CSS**: Utility-first CSS framework with custom components
-- **Prisma ORM**: Type-safe database access with PostgreSQL
-- **Authentication**: Simple password-based admin access for protected routes
-- **MCP Examples**: Model Context Protocol implementations
-- **UI Components**: shadcn-svelte and Bits UI primitives
-- **TypeScript**: Full type safety throughout the application
+- SvelteKit 5 (runes) + TypeScript
+- Tailwind CSS v4
+- Prisma ORM (PostgreSQL)
+- MCP-backed checklist example
+- UI primitives (shadcn-svelte style + Bits UI)
+- Simple password-based admin unlock for protected actions
 
-## Quick start
+## Getting started
 
-1. **Clone the repository and install dependencies:**
+### Prerequisites
+
+- Node.js 18+ (recommended)
+- PostgreSQL (local or hosted)
+
+### Setup
+
+1. Clone the repository and install dependencies:
 
    ```bash
    git clone https://github.com/Michael-Obele/mcp-showcase.git
@@ -24,39 +30,36 @@ A SvelteKit 5 starter / showcase app with Vite, Tailwind CSS, Prisma, and a smal
    npm install
    ```
 
-2. **Set up environment variables:**
-
-   Copy `.env.example` to `.env` and configure the required variables:
+2. Set up environment variables:
 
    ```bash
    cp .env.example .env
    ```
 
-   Edit `.env` with your values (see [Environment Variables](#environment-variables) section below).
+   Update `.env` (see [Environment variables](#environment-variables)).
 
-3. **Set up the database:**
+3. Set up the database:
 
    ```bash
    npx prisma generate
    npx prisma migrate dev --name init
    ```
 
-4. **Run the development server:**
+4. Run the development server:
 
    ```bash
    npm run dev
    ```
 
-5. **Build for production:**
+## Usage
 
-   ```bash
-   npm run build
-   npm run preview
-   ```
+- App runs at `http://localhost:5173/`
+- Checklist demo: `http://localhost:5173/checklist`
+- To edit the checklist, click **Unlock** and enter `ADMIN_PASSWORD`
 
-## Environment Variables
+## Environment variables
 
-This project requires the following environment variables. Copy `.env.example` to `.env` and update the values:
+This project uses two environment variables (see [./.env.example](.env.example)):
 
 - `DATABASE_URL`: PostgreSQL connection string for Prisma
 - `ADMIN_PASSWORD`: Password for admin access to the checklist feature
@@ -68,16 +71,34 @@ DATABASE_URL="postgresql://username:password@localhost:5432/dbname?sslmode=requi
 ADMIN_PASSWORD="your_secure_admin_password"
 ```
 
+**Security:** Never commit `.env`. Use a strong `ADMIN_PASSWORD` and set secrets via your hosting provider in production.
+
+## Database (Prisma)
+
+After setting `DATABASE_URL`, run:
+
+```bash
+npx prisma generate
+npx prisma migrate dev --name init
+```
+
+Useful commands:
+
+```bash
+npx prisma studio
+npx prisma db push
+```
+
+If you maintain a database seed, run `npx prisma db seed` (or a project `db:seed` script if configured).
+
 ## Scripts
 
-Available npm scripts:
-
-- `npm run dev` - Start the development server
+- `npm run dev` - Start dev server
 - `npm run build` - Build for production
 - `npm run preview` - Preview the production build
-- `npm run check` - Run TypeScript and Svelte checks
-- `npm run format` - Format code with Prettier
-- `npm run lint` - Run linting checks
+- `npm run check` - Type + Svelte checks
+- `npm run format` - Format with Prettier
+- `npm run lint` - Prettier check + ESLint
 
 ## Project Structure
 
@@ -86,8 +107,8 @@ src/
 ├── lib/
 │   ├── components/          # UI components (shadcn-svelte, Bits UI)
 │   ├── server/              # Server-side utilities (Prisma client)
-│   ├── remote/              # Remote functions for data fetching
 │   ├── assets/              # Static assets
+│   ├── checklist.remote.ts  # Remote functions for checklist actions
 │   ├── types.ts             # TypeScript type definitions
 │   ├── utils.ts             # Utility functions
 │   └── index.ts             # Library exports
@@ -106,63 +127,23 @@ static/                      # Static assets
 plan/                        # Project notes and planning
 ```
 
-## Database (Prisma)
+## Deployment
 
-This project uses Prisma ORM with PostgreSQL. The database schema is defined in `prisma/schema.prisma`.
+Suggested hosts: Vercel, Netlify, or any Node host that supports SvelteKit. Set `DATABASE_URL` and `ADMIN_PASSWORD` in the host environment.
 
-After setting up your `DATABASE_URL`, run:
-
-```bash
-npx prisma generate
-npx prisma migrate dev --name init
-```
-
-For database management:
+Build/preview locally:
 
 ```bash
-npx prisma studio  # Open Prisma Studio
-npx prisma db push # Push schema changes (for prototyping)
-```
-
-## Tech Stack & Conventions
-
-- **Framework**: SvelteKit 5 with runes (`$state`, `$props`, `$derived`, `$effect`)
-- **Build Tool**: Vite
-- **Styling**: Tailwind CSS v4 with semantic utility classes
-- **Database**: Prisma ORM with PostgreSQL
-- **Authentication**: Simple password-based admin access
-- **Validation**: Valibot for schema validation
-- **UI Components**: shadcn-svelte primitives and Bits UI
-- **Icons**: Lucide icons via `@lucide/svelte`
-- **TypeScript**: Full type safety throughout
-
-### Development Patterns
-
-- Use Svelte 5 runes for reactive state management
-- Prefer remote functions (`src/lib/remote/`) for data fetching
-- Follow component patterns in `src/lib/components/`
-- Use Valibot for input validation
-- Run `npm run check` before committing
-
-## Development
-
-Use the provided scripts to validate and format the code:
-
-```bash
-npm run check    # TypeScript and Svelte checks
-npm run format   # Format code with Prettier
-npm run lint     # Run linting checks
+npm run build
+npm run preview
 ```
 
 ## Contributing
 
-We welcome contributions! Please follow these guidelines:
+Contributions are welcome.
 
-1. **Code Style**: Follow the existing code style (Prettier + ESLint)
-2. **Pre-commit Checks**: Run `npm run check` locally before opening PRs
-3. **Components**: New components should live under `src/lib/components/` and follow existing patterns
-4. **Commits**: Use clear, descriptive commit messages
-5. **Issues**: Open an issue first for significant changes
+- Run `npm run check` before opening a PR
+- Keep changes consistent with existing patterns under `src/lib/components/`
 
 ## Key Files
 
@@ -173,6 +154,23 @@ We welcome contributions! Please follow these guidelines:
 - [`prisma/schema.prisma`](prisma/schema.prisma) - Database schema
 - [`.env.example`](.env.example) - Environment variables template
 
+## Maintainers & Support
+
+- Maintainer: Michael Obele
+- Use GitHub issues for bugs/feature requests
+
 ## License
 
 This project is available under the MIT License — see the `LICENSE` file for details.
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for version history and updates.
+
+## Acknowledgments
+
+Built with [SvelteKit](https://svelte.dev/), [Prisma](https://prisma.io/), [Tailwind CSS](https://tailwindcss.com/), and inspired by open-source UI libraries.
+
+## Code of Conduct
+
+This project follows the [Contributor Covenant](https://www.contributor-covenant.org/version/2/1/code_of_conduct/) code of conduct.
