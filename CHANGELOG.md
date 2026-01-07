@@ -20,6 +20,7 @@
 - Update changelog [skip ci]
 - Update changelog [skip ci]
 - Update changelog [skip ci]
+- Update changelog [skip ci]
 ### Features
 
 - Add new UI components for buttons, cards, drawers, inputs, scroll areas, separators, sonner notifications, tables, and tabs
@@ -43,6 +44,7 @@
 - Add scroll to top functionality with Ctrl+Home shortcut and update button position
 - Add favicon and web app manifest files
 - Update favicon paths and add additional icons for better support
+- Update favicon imports and references for improved asset management
 ### Miscellaneous Tasks
 
 - Prepare mcps.ts for future development
