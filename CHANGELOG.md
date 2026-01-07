@@ -8,9 +8,11 @@
 - Correct transport toggle labels and functionality in +page.svelte
 - Correct parameter name in changelog generation step
 - Remove unnecessary class from transport switch component
+- Update shadow color in Tabs.Trigger component for better accessibility
 ### Documentation
 
 - Update component structure and code quality sections in AI agent instructions
+- Update changelog [skip ci]
 - Update changelog [skip ci]
 - Update changelog [skip ci]
 - Update changelog [skip ci]
