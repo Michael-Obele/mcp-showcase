@@ -1,12 +1,16 @@
-## [Unreleased]
+## [2026-01-07]
+
+
 ### Bug Fixes
 
 - Adjust Card.Description and Card.Content classes for improved layout consistency
 - Update icon usage instructions and enhance type checking guidance in copilot instructions
 - Correct transport toggle labels and functionality in +page.svelte
+- Correct parameter name in changelog generation step
 ### Documentation
 
 - Update component structure and code quality sections in AI agent instructions
+- Update changelog [skip ci]
 ### Features
 
 - Add new UI components for buttons, cards, drawers, inputs, scroll areas, separators, sonner notifications, tables, and tabs
