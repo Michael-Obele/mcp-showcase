@@ -328,7 +328,7 @@
 						<Switch
 							checked={preferredTransport === 'sse'}
 							onCheckedChange={(checked) => (preferredTransport = checked ? 'sse' : 'http')}
-							class="rounded-none!"
+							class=""
 						/>
 						<span
 							class="text-sm font-black {preferredTransport === 'sse'
