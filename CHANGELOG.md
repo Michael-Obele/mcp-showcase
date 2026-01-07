@@ -16,6 +16,7 @@
 - Update changelog [skip ci]
 - Update changelog [skip ci]
 - Update changelog [skip ci]
+- Update changelog [skip ci]
 ### Features
 
 - Add new UI components for buttons, cards, drawers, inputs, scroll areas, separators, sonner notifications, tables, and tabs
@@ -36,6 +37,7 @@
 - Enhance styling guidelines with sharp edges and dotted underlines
 - Update runed dependency to version 0.37.1
 - Add opencode configuration to MCP install settings
+- Add scroll to top functionality with Ctrl+Home shortcut and update button position
 ### Miscellaneous Tasks
 
 - Prepare mcps.ts for future development
