@@ -10,7 +10,7 @@ const config = {
 		inspector: {
 			toggleKeyCombo: 'alt-x',
 			showToggleButton: 'always',
-			toggleButtonPos: 'bottom-right'
+			toggleButtonPos: 'bottom-left'
 		}
 	},
 
