@@ -149,25 +149,25 @@
 	<Button
 		variant="outline"
 		size="icon"
-		class={`fixed right-8 bottom-10 z-50 rounded-none shadow-lg transition-all duration-300 ${showBackToTop ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`}
+		class="fixed right-8 bottom-12 z-50 rounded-none shadow-lg transition-all duration-300 ${showBackToTop
+			? 'scale-100 opacity-100'
+			: 'scale-0 opacity-0'}"
 		onclick={scrollToTop}
 	>
 		<ArrowUp class="h-5 w-5" />
 	</Button>
 
 	<!-- Scroll to top button -->
-	<div class="fixed right-4 bottom-4 hidden lg:block">
-		<Button
-			variant="ghost"
-			size="lg"
-			onclick={scrollToTop}
-			class="h-6 gap-1 px-1.5 text-sm {showBackToTop
-				? 'scale-100 opacity-100'
-				: 'scale-0 opacity-0'}"
-			aria-label="Scroll to top (Ctrl+Home)"
-		>
-			<ArrowBigUp class="size-2.5" />
-			Ctrl+Home
-		</Button>
-	</div>
+	<Button
+		variant="ghost"
+		size="lg"
+		onclick={scrollToTop}
+		class="fixed right-4 bottom-6 hidden h-6 gap-1 px-1.5 text-base lg:block {showBackToTop
+			? 'scale-100 opacity-100'
+			: 'scale-0 opacity-0'}"
+		aria-label="Scroll to top (Ctrl+Home)"
+	>
+		<!-- <ArrowBigUp class="" /> -->
+		Ctrl+Home
+	</Button>
 </div>
