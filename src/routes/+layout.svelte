@@ -33,7 +33,7 @@
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<link rel="icon" type="image/svg+xml" href={favicon} />
 	<link rel="icon" type="image/png" href={favicon96} sizes="96x96" />
 	<link rel="shortcut icon" href={faviconIco} />
 	<link rel="apple-touch-icon" sizes="180x180" href={appleTouchIcon} />
