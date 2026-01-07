@@ -46,6 +46,7 @@ export interface MCPInstallConfig {
 	cli?: string;
 	codex?: string;
 	gemini?: Record<string, unknown>;
+	opencode?: Record<string, unknown>;
 }
 
 export interface Tool {
@@ -84,6 +85,7 @@ export interface MCP {
 		cli?: string;
 		codex?: string;
 		gemini?: Record<string, unknown>;
+		opencode?: Record<string, unknown>;
 	};
 	tools?: Tool[];
 	prompts?: Prompt[];

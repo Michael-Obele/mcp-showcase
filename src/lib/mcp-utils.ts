@@ -89,6 +89,15 @@ export function getFullInstallConfig(
 				}
 			}
 		};
+		generated.opencode = {
+			mcp: {
+				[name]: {
+					type: 'remote',
+					url: url,
+					enabled: true
+				}
+			}
+		};
 	}
 
 	// Merge logic: deep merge for nested objects if needed, but here simple property check is fine
@@ -100,6 +109,7 @@ export function getFullInstallConfig(
 		zed: install.zed || generated.zed,
 		cli: install.cli || generated.cli,
 		codex: install.codex || generated.codex,
-		gemini: install.gemini || generated.gemini
+		gemini: install.gemini || generated.gemini,
+		opencode: install.opencode || generated.opencode
 	};
 }
