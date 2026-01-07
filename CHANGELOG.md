@@ -22,6 +22,7 @@
 - Add password visibility toggle in authentication input
 - Add example environment variables and license file
 - Add changelog file to document project updates
+- Add automated changelog generation with GitHub Actions
 ### Miscellaneous Tasks
 
 - Prepare mcps.ts for future development
