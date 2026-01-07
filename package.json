@@ -50,6 +50,7 @@
 	"dependencies": {
 		"@prisma/client": "^6.0.0",
 		"prisma": "^6.0.0",
+		"runed": "^0.37.1",
 		"valibot": "^1.2.0"
 	}
 }
