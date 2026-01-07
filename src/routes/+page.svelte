@@ -246,14 +246,14 @@
 								</h3>
 								<div class="flex items-center space-x-2 rounded-lg bg-muted/30 px-3 py-1.5">
 									<Label for="transport-toggle" class="text-xs font-medium text-muted-foreground"
-										>HTTP</Label
+										>SSE</Label
 									>
 									<Switch
 										id="transport-toggle"
-										checked={preferredTransport === 'sse'}
-										onCheckedChange={(checked) => (preferredTransport = checked ? 'sse' : 'http')}
+										checked={preferredTransport === 'http'}
+										onCheckedChange={(checked) => (preferredTransport = checked ? 'http' : 'sse')}
 									/>
-									<Label for="transport-toggle" class="text-xs font-medium text-primary">SSE</Label>
+									<Label for="transport-toggle" class="text-xs font-medium text-primary">HTTP</Label>
 								</div>
 							</div>
 							{#if installConfig}
