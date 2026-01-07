@@ -109,7 +109,7 @@
 							{@const Icon = getIconForTags(mcp.tags)}
 							<Tabs.Trigger
 								value={mcp.id}
-								class="flex h-10 shrink-0 items-center gap-2 rounded-none border-2 border-border bg-background px-4 font-mono transition-all hover:border-primary/50 hover:text-foreground data-[state=active]:border-primary data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:h-12 md:px-6 dark:data-[state=active]:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)]"
+								class="flex h-10 shrink-0 items-center gap-2 rounded-none border-2 border-border bg-background px-4 font-mono transition-all hover:border-primary/50 hover:text-foreground data-[state=active]:border-primary data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] md:h-12 md:px-6 dark:data-[state=active]:shadow-[4px_4px_0px_0px_oklch(0.796_0.187_76.5/0.6)]"
 							>
 								<Icon class="h-4 w-4" />
 								<span class="underline decoration-dotted">{mcp.name}</span>
