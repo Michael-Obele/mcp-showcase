@@ -11,6 +11,7 @@
 
 - Update component structure and code quality sections in AI agent instructions
 - Update changelog [skip ci]
+- Update changelog [skip ci]
 ### Features
 
 - Add new UI components for buttons, cards, drawers, inputs, scroll areas, separators, sonner notifications, tables, and tabs
@@ -28,6 +29,9 @@
 - Add changelog file to document project updates
 - Add automated changelog generation with GitHub Actions
 - Update changelog to use dates instead of versions
+- Enhance styling guidelines with sharp edges and dotted underlines
+- Update runed dependency to version 0.37.1
+- Add opencode configuration to MCP install settings
 ### Miscellaneous Tasks
 
 - Prepare mcps.ts for future development
