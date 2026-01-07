@@ -6,7 +6,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { Badge } from '$lib/components/ui/badge';
-	import { Lock, Unlock, ExternalLink, RefreshCcw, Terminal } from '@lucide/svelte';
+	import { Lock, Unlock, ExternalLink, RefreshCcw, Terminal, Eye, EyeOff } from '@lucide/svelte';
 	import type { PageData } from './$types';
 	import { updateChecklistItem, login, logout } from '$lib/checklist.remote';
 
@@ -18,6 +18,7 @@
 
 	let isAuthorized = $derived(data.authenticated);
 	let password = $state('');
+	let showPassword = $state(false);
 	let checklistData = $derived<Record<string, Record<string, boolean>>>(data.checklistData || {});
 
 	// Initialize missing data if authorized
@@ -93,13 +94,29 @@
 				<p class="mt-2 text-muted-foreground">Please enter your administration password.</p>
 			</div>
 			<div class="flex w-full flex-col space-y-2">
-				<Input
-					type="password"
-					placeholder="Enter password..."
-					bind:value={password}
-					onkeydown={(e) => e.key === 'Enter' && handleAuth()}
-					class="border-primary/20 bg-muted/50 focus-visible:ring-primary"
-				/>
+				<div class="relative">
+					<Input
+						type={showPassword ? 'text' : 'password'}
+						placeholder="Enter password..."
+						bind:value={password}
+						onkeydown={(e) => e.key === 'Enter' && handleAuth()}
+						class="border-primary/20 bg-muted/50 focus-visible:ring-primary pr-10"
+					/>
+					<Button
+						type="button"
+						variant="ghost"
+						size="sm"
+						class="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+						onclick={() => showPassword = !showPassword}
+						aria-label={showPassword ? 'Hide password' : 'Show password'}
+					>
+						{#if showPassword}
+							<EyeOff class="h-4 w-4" />
+						{:else}
+							<Eye class="h-4 w-4" />
+						{/if}
+					</Button>
+				</div>
 				<Button
 					onclick={handleAuth}
 					class="w-full bg-primary text-primary-foreground hover:bg-primary/90"
