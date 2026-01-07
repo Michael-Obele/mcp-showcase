@@ -9,9 +9,11 @@
 - Correct parameter name in changelog generation step
 - Remove unnecessary class from transport switch component
 - Update shadow color in Tabs.Trigger component for better accessibility
+- Adjust positioning and visibility of scroll to top buttons
 ### Documentation
 
 - Update component structure and code quality sections in AI agent instructions
+- Update changelog [skip ci]
 - Update changelog [skip ci]
 - Update changelog [skip ci]
 - Update changelog [skip ci]
