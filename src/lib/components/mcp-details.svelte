@@ -64,10 +64,10 @@
 
 {#snippet codeCpy(code: string)}
 	<div
-		class="group relative mt-2 rounded-none border border-border bg-muted/50 p-4 font-mono text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]"
+		class="group relative mt-2 w-full max-w-6xl rounded-none border border-border bg-muted/50 p-4 font-mono text-sm"
 	>
-		<ScrollArea orientation="horizontal" class="pb-2">
-			<pre class="text-foreground/90">{code}</pre>
+		<ScrollArea orientation="horizontal" class="max-w-[50vw] pt-8 pb-2 whitespace-nowrap">
+			<pre class="whitespace-pre text-foreground/90">{code}</pre>
 		</ScrollArea>
 		<Button
 			variant="ghost"
@@ -361,7 +361,10 @@
 						</Tabs.List>
 
 						<div class="mt-8">
-							<Tabs.Content value="cursor" class="animate-in duration-300 fade-in">
+							<Tabs.Content
+								value="cursor"
+								class="container  animate-in overflow-clip duration-300 fade-in"
+							>
 								<p class="mb-4 text-base font-bold text-foreground">
 									Add to <span class="underline decoration-dotted underline-offset-4"
 										>Cursor Rules</span

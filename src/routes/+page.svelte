@@ -12,9 +12,6 @@
 		Cpu,
 		ArrowBigUp
 	} from '@lucide/svelte';
-	import { pushState } from '$app/navigation';
-	import { page } from '$app/state';
-	import { browser } from '$app/environment';
 	import McpDetails from '$lib/components/mcp-details.svelte';
 	import { onMount, tick } from 'svelte';
 	import { useSearchParams } from 'runed/kit';
