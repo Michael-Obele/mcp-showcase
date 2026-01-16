@@ -2,9 +2,7 @@
 	import { Separator } from '$lib/components/ui/separator';
 </script>
 
-<footer
-	class="border-t border-white/5 px-4 py-8 opacity-60 transition-opacity hover:opacity-100 sm:px-6 lg:px-8"
->
+<footer class="border-t border-white/5 px-4 py-8 opacity-60 transition-opacity sm:px-6 lg:px-8">
 	<div class="container mx-auto flex flex-col items-center justify-between gap-4 md:flex-row">
 		<p class="text-sm">
 			&copy; {new Date().getFullYear()} ServerShowcase. Built with Svelte 5 & MCP.

@@ -6,7 +6,6 @@
 	import { ScrollArea } from '$lib/components/ui/scroll-area';
 	import { Separator } from '$lib/components/ui/separator';
 	import { Switch } from '$lib/components/ui/switch';
-	import { Label } from '$lib/components/ui/label';
 	import { getFullInstallConfig } from '$lib/mcp-utils';
 	import {
 		Github,
