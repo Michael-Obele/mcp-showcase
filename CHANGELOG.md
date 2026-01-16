@@ -1,4 +1,4 @@
-## [2026-01-11]
+## [2026-01-16]
 
 
 ### Bug Fixes
@@ -11,9 +11,11 @@
 - Update shadow color in Tabs.Trigger component for better accessibility
 - Adjust positioning and visibility of scroll to top buttons
 - Specify icon type for favicon in layout
+- Adjust ScrollArea max-width for better layout
 ### Documentation
 
 - Update component structure and code quality sections in AI agent instructions
+- Update changelog [skip ci]
 - Update changelog [skip ci]
 - Update changelog [skip ci]
 - Update changelog [skip ci]
@@ -56,6 +58,7 @@
 
 - Standardize import statements and improve code consistency across components
 - Improve state management in layout and checklist pages
+- Simplify footer component and improve hover effect
 ### Styling
 
 - Format code for consistency and readability in inspiration and notes documentation
