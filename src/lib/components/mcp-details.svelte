@@ -65,7 +65,7 @@
 	<div
 		class="group relative mt-2 w-full max-w-6xl rounded-none border border-border bg-muted/50 p-4 font-mono text-sm"
 	>
-		<ScrollArea orientation="horizontal" class="max-w-[50vw] pt-8 pb-2 whitespace-nowrap">
+		<ScrollArea orientation="horizontal" class=" pt-8 pb-2 whitespace-nowrap">
 			<pre class="whitespace-pre text-foreground/90">{code}</pre>
 		</ScrollArea>
 		<Button
