@@ -1,4 +1,4 @@
-## [2026-01-16]
+## [2026-01-24]
 
 
 ### Bug Fixes
@@ -12,9 +12,11 @@
 - Adjust positioning and visibility of scroll to top buttons
 - Specify icon type for favicon in layout
 - Adjust ScrollArea max-width for better layout
+- Adjust snippet layout for improved responsiveness
 ### Documentation
 
 - Update component structure and code quality sections in AI agent instructions
+- Update changelog [skip ci]
 - Update changelog [skip ci]
 - Update changelog [skip ci]
 - Update changelog [skip ci]
