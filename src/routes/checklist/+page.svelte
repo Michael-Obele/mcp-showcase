@@ -17,6 +17,7 @@
 	let { data }: Props = $props();
 
 	let isAuthorized = $derived(data.authenticated);
+	let databaseEnabled = $derived(data.databaseEnabled);
 	let password = $state('');
 	let showPassword = $state(false);
 	let checklistData = $derived<Record<string, Record<string, boolean>>>(data.checklistData || {});
@@ -84,6 +85,17 @@
 </script>
 
 <div class="container min-h-screen py-12">
+	{#if !databaseEnabled}
+		<div
+			class="mb-8 border-2 border-dashed border-red-500 bg-red-500/10 p-4 text-center text-red-500"
+		>
+			<p class="font-bold">⚠️ Database not configured</p>
+			<p class="mt-1 text-sm">
+				Prisma features are currently mocked. Changes will not be persisted.
+			</p>
+		</div>
+	{/if}
+
 	{#if !isAuthorized}
 		<div class="mx-auto flex max-w-md flex-col items-center justify-center space-y-6 pt-20">
 			<div class="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
@@ -100,14 +112,14 @@
 						placeholder="Enter password..."
 						bind:value={password}
 						onkeydown={(e) => e.key === 'Enter' && handleAuth()}
-						class="border-primary/20 bg-muted/50 focus-visible:ring-primary pr-10"
+						class="border-primary/20 bg-muted/50 pr-10 focus-visible:ring-primary"
 					/>
 					<Button
 						type="button"
 						variant="ghost"
 						size="sm"
-						class="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-						onclick={() => showPassword = !showPassword}
+						class="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
+						onclick={() => (showPassword = !showPassword)}
 						aria-label={showPassword ? 'Hide password' : 'Show password'}
 					>
 						{#if showPassword}

@@ -18,7 +18,7 @@ A SvelteKit 5 starter / showcase app with Vite, Tailwind CSS v4, Prisma, and a s
 ### Prerequisites
 
 - Node.js 18+ (recommended)
-- PostgreSQL (local or hosted)
+- PostgreSQL (optional - database features will be mocked if missing)
 
 ### Setup
 
@@ -61,7 +61,7 @@ A SvelteKit 5 starter / showcase app with Vite, Tailwind CSS v4, Prisma, and a s
 
 This project uses two environment variables (see [./.env.example](.env.example)):
 
-- `DATABASE_URL`: PostgreSQL connection string for Prisma
+- `DATABASE_URL`: PostgreSQL connection string for Prisma (**Optional** - database features will be mocked if missing)
 - `ADMIN_PASSWORD`: Password for admin access to the checklist feature
 
 Example `.env` file:

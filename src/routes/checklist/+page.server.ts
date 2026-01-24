@@ -1,10 +1,10 @@
 import type { PageServerLoad } from './$types';
-import { prisma } from '$lib/server/prisma';
+import { prisma, databaseEnabled } from '$lib/server/prisma';
 
 export const load: PageServerLoad = async ({ cookies }) => {
 	const authenticated = cookies.get('admin_session') === 'true';
 
-	// Load checklist data from Prisma
+	// Load checklist data from Prisma (returns [] if DB is disabled/mocked)
 	const dbItems = (await prisma.checklistItem.findMany()) || [];
 
 	// Convert to the nested object format used by the UI
@@ -18,6 +18,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
 	return {
 		authenticated,
-		checklistData
+		checklistData,
+		databaseEnabled
 	};
 };
