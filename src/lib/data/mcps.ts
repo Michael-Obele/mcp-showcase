@@ -77,7 +77,7 @@ export const mcps: MCP[] = [
 		],
 		mastra: {
 			domain: 'tauri-docs.mastra.cloud',
-			slug: 'tauri-docs'
+			slug: 'tauri-docs-mcp'
 		},
 		install: {},
 		tools: [
