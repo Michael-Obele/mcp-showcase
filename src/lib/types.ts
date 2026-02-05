@@ -21,6 +21,7 @@ export interface WindsurfInstall {
 export interface VSCodeInstall {
 	commandPalette: string;
 	mcpJson: Record<string, unknown>;
+	alternativeJson?: Record<string, unknown>;
 }
 
 export interface ZedInstall {

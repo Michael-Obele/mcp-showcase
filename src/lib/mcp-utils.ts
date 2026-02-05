@@ -65,6 +65,12 @@ export function getFullInstallConfig(
 						args: ['-y', 'mcp-remote', url]
 					}
 				}
+			},
+			alternativeJson: {
+				[name]: {
+					url: url,
+					type: transport
+				}
 			}
 		};
 

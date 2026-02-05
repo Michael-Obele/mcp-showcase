@@ -30,6 +30,14 @@
 
 	let preferredTransport = $state<'sse' | 'http'>('http');
 	let installConfig = $derived(getFullInstallConfig(mcp, preferredTransport));
+	let showMcpServersWrapper = $state(false);
+	let showMcpJsonWrapper = $state(true);
+
+	let mcpJsonDisplay = $derived(() => {
+		const mcpJson = installConfig.vscode?.mcpJson;
+		if (!mcpJson) return {};
+		return showMcpJsonWrapper ? mcpJson : (mcpJson as any).mcpServers || {};
+	});
 
 	function copyToClipboard(text: string) {
 		navigator.clipboard.writeText(text);
@@ -397,17 +405,51 @@
 									</div>
 									<Separator class="rounded-none" />
 									<div class="space-y-4">
-										<p
-											class="text-base font-bold tracking-tighter uppercase underline decoration-dotted underline-offset-4"
-										>
-											mcp.json
-										</p>
+										<div class="flex items-center justify-between">
+											<p
+												class="text-base font-bold tracking-tighter uppercase underline decoration-dotted underline-offset-4"
+											>
+												mcp.json
+											</p>
+											<div class="flex items-center gap-2">
+												<label for="mcpJson-toggle" class="text-sm text-muted-foreground">
+													Include mcpServers
+												</label>
+												<Switch id="mcpJson-toggle" bind:checked={showMcpJsonWrapper} />
+											</div>
+										</div>
 										<p class="text-sm text-muted-foreground">
 											Add to your <strong class="bg-primary/10 px-1 text-primary"
 												>.vscode/mcp.json</strong
 											>:
 										</p>
-										{@render codeCpy(formatConfig(installConfig.vscode?.mcpJson || ''))}
+										{@render codeCpy(formatConfig(mcpJsonDisplay()))}
+									</div>
+									<Separator class="rounded-none" />
+									<div class="space-y-4">
+										<div class="flex items-center justify-between">
+											<p
+												class="text-base font-bold tracking-tighter uppercase underline decoration-dotted underline-offset-4"
+											>
+												Alternative Format
+											</p>
+											<div class="flex items-center gap-2">
+												<label for="mcpServers-toggle" class="text-sm text-muted-foreground">
+													Include mcpServers
+												</label>
+												<Switch id="mcpServers-toggle" bind:checked={showMcpServersWrapper} />
+											</div>
+										</div>
+										<p class="text-sm text-muted-foreground">
+											Alternative configuration format for VS Code MCP extensions:
+										</p>
+										{@render codeCpy(
+											formatConfig(
+												showMcpServersWrapper
+													? { mcpServers: installConfig.vscode?.alternativeJson }
+													: installConfig.vscode?.alternativeJson || ''
+											)
+										)}
 									</div>
 								</div>
 							</Tabs.Content>
