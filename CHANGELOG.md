@@ -1,4 +1,4 @@
-## [2026-01-24]
+## [2026-02-05]
 
 
 ### Bug Fixes
@@ -13,9 +13,11 @@
 - Specify icon type for favicon in layout
 - Adjust ScrollArea max-width for better layout
 - Adjust snippet layout for improved responsiveness
+- Update slug for mastra domain in mcps configuration
 ### Documentation
 
 - Update component structure and code quality sections in AI agent instructions
+- Update changelog [skip ci]
 - Update changelog [skip ci]
 - Update changelog [skip ci]
 - Update changelog [skip ci]
