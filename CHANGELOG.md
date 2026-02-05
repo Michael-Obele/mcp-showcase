@@ -31,6 +31,7 @@
 - Update changelog [skip ci]
 - Update changelog [skip ci]
 - Update changelog [skip ci]
+- Update changelog [skip ci]
 ### Features
 
 - Add new UI components for buttons, cards, drawers, inputs, scroll areas, separators, sonner notifications, tables, and tabs
@@ -56,6 +57,7 @@
 - Update favicon paths and add additional icons for better support
 - Update favicon imports and references for improved asset management
 - Enhance database handling with mock client and update documentation
+- Add support for alternative JSON format in MCP configuration
 ### Miscellaneous Tasks
 
 - Prepare mcps.ts for future development
