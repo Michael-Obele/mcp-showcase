@@ -33,6 +33,7 @@
 - Update changelog [skip ci]
 - Update changelog [skip ci]
 - Update changelog [skip ci]
+- Update changelog [skip ci]
 ### Features
 
 - Add new UI components for buttons, cards, drawers, inputs, scroll areas, separators, sonner notifications, tables, and tabs
@@ -60,6 +61,8 @@
 - Enhance database handling with mock client and update documentation
 - Add support for alternative JSON format in MCP configuration
 - Enhance MCP configuration with support for stdio transport and new Drizzle MCP
+- Update MCP details component to adjust default transport and toggle visibility for JSON display
+- Add icons to MCP configuration and update display logic in components
 ### Miscellaneous Tasks
 
 - Prepare mcps.ts for future development
