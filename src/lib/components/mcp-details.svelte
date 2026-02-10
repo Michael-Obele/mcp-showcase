@@ -28,10 +28,10 @@
 
 	let { mcp } = $props<{ mcp: MCP }>();
 
-	let preferredTransport = $state<'sse' | 'http' | 'stdio'>('sse');
+	let preferredTransport = $state<'sse' | 'http' | 'stdio'>('http');
 	let installConfig = $derived(getFullInstallConfig(mcp, preferredTransport));
 	let showMcpServersWrapper = $state(false);
-	let showMcpJsonWrapper = $state(true);
+	let showMcpJsonWrapper = $state(false);
 
 	// Additional toggles for other platforms
 	let showClaudeMcpServers = $state(true);
@@ -67,8 +67,14 @@
 		toast.success('Copied to clipboard');
 	}
 
-	function formatConfig(config: Record<string, unknown> | string) {
+	function formatConfig(config: Record<string, unknown> | string, noOuterBraces = false) {
 		if (typeof config === 'string') return config;
+		if (noOuterBraces && Object.keys(config).length === 1) {
+			const [key, value] = Object.entries(config)[0];
+			const valueStr = JSON.stringify(value, null, 2);
+			const indented = valueStr.replace(/\n/g, '\n    ');
+			return `"${key}": ${indented}`;
+		}
 		return JSON.stringify(config, null, 2);
 	}
 
@@ -550,7 +556,7 @@
 			<!-- Platform Configs -->
 			<div class="space-y-8">
 				{#if installConfig}
-					<Tabs.Root value="cursor" class="w-full">
+					<Tabs.Root value="vscode" class="w-full">
 						<Tabs.List
 							class="flex h-fit w-full flex-wrap gap-2 border-b-2 border-border bg-transparent p-0"
 						>
@@ -628,7 +634,7 @@
 												>.vscode/mcp.json</strong
 											>:
 										</p>
-										{@render codeCpy(formatConfig(mcpJsonDisplay()))}
+										{@render codeCpy(formatConfig(mcpJsonDisplay(), !showMcpJsonWrapper))}
 									</div>
 									<Separator class="rounded-none" />
 									<div class="space-y-4">
@@ -652,7 +658,8 @@
 											formatConfig(
 												showMcpServersWrapper
 													? { mcpServers: installConfig.vscode?.alternativeJson }
-													: installConfig.vscode?.alternativeJson || ''
+													: installConfig.vscode?.alternativeJson || '',
+												!showMcpServersWrapper
 											)
 										)}
 									</div>
@@ -678,7 +685,7 @@
 										>gemini_config.json</strong
 									>:
 								</p>
-								{@render codeCpy(formatConfig(geminiConfigDisplay()))}
+								{@render codeCpy(formatConfig(geminiConfigDisplay(), !showGeminiMcpServers))}
 							</Tabs.Content>
 
 							<Tabs.Content value="codex" class="animate-in duration-300 fade-in">
@@ -712,7 +719,7 @@
 												>claude_desktop_config.json</strong
 											>:
 										</p>
-										{@render codeCpy(formatConfig(claudeConfigDisplay()))}
+										{@render codeCpy(formatConfig(claudeConfigDisplay(), !showClaudeMcpServers))}
 									</div>
 									<Separator class="rounded-none" />
 									<div class="space-y-4">
@@ -741,7 +748,7 @@
 										<Switch id="windsurf-mcp-toggle" bind:checked={showWindsurfMcpServers} />
 									</div>
 								</div>
-								{@render codeCpy(formatConfig(windsurfConfigDisplay()))}
+								{@render codeCpy(formatConfig(windsurfConfigDisplay(), !showWindsurfMcpServers))}
 							</Tabs.Content>
 
 							<Tabs.Content value="zed" class="animate-in duration-300 fade-in">
