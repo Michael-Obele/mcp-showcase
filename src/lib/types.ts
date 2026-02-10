@@ -61,6 +61,8 @@ export interface Prompt {
 	arguments?: { name: string; description: string; required: boolean }[];
 }
 
+import { type Icon as IconType } from '@lucide/svelte';
+
 export interface MCP {
 	id: string;
 	name: string;
@@ -69,6 +71,7 @@ export interface MCP {
 	tags: string[];
 	githubUrl: string;
 	features: string[];
+	icon: typeof IconType;
 	mastra?: {
 		domain: string;
 		slug: string;

@@ -1,4 +1,5 @@
 import type { MCP } from '../types';
+import { Server as ServerIcon, Database, Globe, CloudRainWind, Cpu } from '@lucide/svelte';
 
 export const mcps: MCP[] = [
 	{
@@ -15,6 +16,7 @@ export const mcps: MCP[] = [
 			'Fuzzy search with typo tolerance',
 			'Support for HTTP and SSE transports'
 		],
+		icon: Globe,
 		mastra: {
 			domain: 'shadcn-svelte.mastra.cloud',
 			slug: 'shadcn'
@@ -77,6 +79,7 @@ export const mcps: MCP[] = [
 			'Clean HTML output',
 			'Guided prompts for common workflows'
 		],
+		icon: Cpu,
 		mastra: {
 			domain: 'tauri-docs.mastra.cloud',
 			slug: 'tauri-docs-mcp'
@@ -117,6 +120,7 @@ export const mcps: MCP[] = [
 			'Standard library API reference',
 			'Crate documentation support'
 		],
+		icon: Cpu,
 		mastra: {
 			domain: 'rust-docs.mastra.cloud',
 			slug: 'rust-docs'
@@ -157,6 +161,7 @@ export const mcps: MCP[] = [
 			'Standard library reference',
 			'Function signature lookup'
 		],
+		icon: ServerIcon,
 		mastra: {
 			domain: 'go-docs.mastra.cloud',
 			slug: 'go-docs'
@@ -184,6 +189,7 @@ export const mcps: MCP[] = [
 			'Chart example retrieval',
 			'API reference for visualization components'
 		],
+		icon: ServerIcon,
 		mastra: {
 			domain: 'layerchart-docs.mastra.cloud',
 			slug: 'layerchart-docs'
@@ -232,6 +238,7 @@ export const mcps: MCP[] = [
 			'HTTP and SSE transport protocols',
 			'Real-time web scraping from orm.drizzle.team'
 		],
+		icon: CloudRainWind,
 		mastra: {
 			domain: 'drizzle.mastra.cloud',
 			slug: 'drizzle-docs-mcp'

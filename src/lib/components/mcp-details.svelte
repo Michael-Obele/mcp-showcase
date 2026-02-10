@@ -564,7 +564,7 @@
 								{@const Icon = getIconForPlatform(platform)}
 								<Tabs.Trigger
 									value={platform}
-									class="relative h-12 gap-2 rounded-none border-b-4 border-transparent px-6 font-black tracking-widest text-muted-foreground uppercase transition-all hover:text-foreground data-[state=active]:border-primary data-[state=active]:text-primary"
+									class="relative flex h-12 items-center gap-2 rounded-none border-2 border-transparent px-6 font-black tracking-widest text-muted-foreground uppercase transition-all hover:text-foreground data-[state=active]:border-primary data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)] md:data-[state=active]:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
 								>
 									{#if Icon}
 										<Icon class="h-4 w-4" />
