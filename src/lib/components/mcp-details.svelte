@@ -28,15 +28,38 @@
 
 	let { mcp } = $props<{ mcp: MCP }>();
 
-	let preferredTransport = $state<'sse' | 'http'>('http');
+	let preferredTransport = $state<'sse' | 'http' | 'stdio'>('sse');
 	let installConfig = $derived(getFullInstallConfig(mcp, preferredTransport));
 	let showMcpServersWrapper = $state(false);
 	let showMcpJsonWrapper = $state(true);
+
+	// Additional toggles for other platforms
+	let showClaudeMcpServers = $state(true);
+	let showWindsurfMcpServers = $state(true);
+	let showGeminiMcpServers = $state(true);
 
 	let mcpJsonDisplay = $derived(() => {
 		const mcpJson = installConfig.vscode?.mcpJson;
 		if (!mcpJson) return {};
 		return showMcpJsonWrapper ? mcpJson : (mcpJson as any).mcpServers || {};
+	});
+
+	let claudeConfigDisplay = $derived(() => {
+		const claudeConfig = installConfig.claude?.config;
+		if (!claudeConfig) return {};
+		return showClaudeMcpServers ? claudeConfig : (claudeConfig as any).mcpServers || {};
+	});
+
+	let windsurfConfigDisplay = $derived(() => {
+		const windsurfConfig = installConfig.windsurf;
+		if (!windsurfConfig) return {};
+		return showWindsurfMcpServers ? windsurfConfig : (windsurfConfig as any).mcpServers || {};
+	});
+
+	let geminiConfigDisplay = $derived(() => {
+		const geminiConfig = installConfig.gemini;
+		if (!geminiConfig) return {};
+		return showGeminiMcpServers ? geminiConfig : (geminiConfig as any).mcpServers || {};
 	});
 
 	function copyToClipboard(text: string) {
@@ -68,6 +91,188 @@
 		}
 	}
 </script>
+
+{#snippet mcpHeadToggle(
+	platform: string,
+	currentMode: 'sse' | 'stdio' | 'http',
+	onToggle: (mode: 'sse' | 'stdio' | 'http') => void
+)}
+	<div class="mb-6 flex items-center justify-between border-border pb-4">
+		<div class="flex items-center gap-2">
+			<div class="h-2 w-2 bg-primary"></div>
+			<p class="text-xs font-black tracking-widest text-muted-foreground uppercase">
+				Transport Mode for {platform}
+			</p>
+		</div>
+		<div class="flex items-center gap-2 border border-border/50 bg-muted/30 p-1">
+			<Button
+				variant="ghost"
+				size="sm"
+				class="h-8 rounded-none border border-transparent px-3 text-[10px] font-black uppercase transition-all data-[active=true]:border-primary data-[active=true]:bg-primary data-[active=true]:text-primary-foreground"
+				onclick={() => onToggle('sse')}
+				data-active={currentMode === 'sse'}
+			>
+				SSE
+			</Button>
+			<Button
+				variant="ghost"
+				size="sm"
+				class="h-8 rounded-none border border-transparent px-3 text-[10px] font-black uppercase transition-all data-[active=true]:border-primary data-[active=true]:bg-primary data-[active=true]:text-primary-foreground"
+				onclick={() => onToggle('stdio')}
+				data-active={currentMode === 'stdio'}
+			>
+				STDIO
+			</Button>
+		</div>
+	</div>
+{/snippet}
+
+{#snippet cursorGuide()}
+	<div class="mt-8 space-y-12 border-t-2 border-dotted border-border pt-12">
+		<div class="space-y-4">
+			<div class="flex items-center gap-3">
+				<div
+					class="bg-primary p-2 text-primary-foreground shadow-[3px_3px_0px_0px_rgba(0,0,0,0.2)]"
+				>
+					<Bot class="h-5 w-5" />
+				</div>
+				<h3 class="text-xl font-black tracking-tighter uppercase italic">
+					How to Use MCP in Cursor
+				</h3>
+			</div>
+
+			<div class="space-y-6">
+				<!-- What is MCP? -->
+				<section>
+					<h4
+						class="mb-3 text-sm font-black tracking-widest text-primary uppercase underline decoration-dotted underline-offset-4"
+					>
+						What is MCP?
+					</h4>
+					<blockquote
+						class="rounded-none border-l-4 border-dotted border-primary bg-muted/30 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.05)]"
+					>
+						<p class="text-sm leading-relaxed font-medium text-foreground italic">
+							Model Context Protocol (MCP) is an open protocol that allows you to provide custom
+							tools to agentic LLMs in Cursor's Composer feature.
+						</p>
+					</blockquote>
+				</section>
+
+				<!-- Installation Steps -->
+				<section>
+					<h4
+						class="mb-4 text-sm font-black tracking-widest text-primary uppercase underline decoration-dotted underline-offset-4"
+					>
+						Installation Steps
+					</h4>
+					<div class="grid gap-4 md:grid-cols-2">
+						<div
+							class="group relative rounded-none border-2 border-border bg-background p-5 transition-all hover:border-primary/50"
+						>
+							<div class="mb-2 flex items-center justify-between">
+								<span
+									class="bg-primary/10 px-2 py-1 font-mono text-xs font-black text-primary uppercase"
+									>STEP 01</span
+								>
+								<Settings class="h-4 w-4 text-muted-foreground" />
+							</div>
+							<h5 class="mb-2 font-bold tracking-tight uppercase">Open Settings</h5>
+							<p class="text-xs leading-relaxed text-muted-foreground">
+								Navigate to <span
+									class="font-bold text-foreground underline decoration-dotted underline-offset-2"
+									>Cursor Settings &gt; Features &gt; MCP</span
+								>
+								and click the <span class="font-bold text-foreground">+ Add New MCP Server</span> button.
+							</p>
+						</div>
+						<div
+							class="group relative rounded-none border-2 border-border bg-background p-5 transition-all hover:border-primary/50"
+						>
+							<div class="mb-2 flex items-center justify-between">
+								<span
+									class="bg-primary/10 px-2 py-1 font-mono text-xs font-black text-primary uppercase"
+									>STEP 02</span
+								>
+								<Terminal class="h-4 w-4 text-muted-foreground" />
+							</div>
+							<h5 class="mb-2 font-bold tracking-tight uppercase">Configure Server</h5>
+							<p class="text-xs leading-relaxed text-muted-foreground">
+								Select the transport type (<span class="font-bold text-foreground">sse</span> or
+								<span class="font-bold text-foreground">stdio</span>) and enter the URL or Command
+								provided above.
+							</p>
+						</div>
+					</div>
+				</section>
+
+				<!-- Using Tools -->
+				<section>
+					<h4
+						class="mb-4 text-sm font-black tracking-widest text-primary uppercase underline decoration-dotted underline-offset-4"
+					>
+						Using Tools in Composer
+					</h4>
+					<div class="rounded-none border border-border bg-muted/10 p-5">
+						<ul class="space-y-4">
+							<li class="flex items-start gap-4">
+								<div
+									class="flex h-8 w-8 shrink-0 items-center justify-center bg-primary text-primary-foreground"
+								>
+									<Zap class="h-4 w-4" />
+								</div>
+								<div>
+									<p class="text-sm font-bold tracking-tight uppercase">Tool Availability</p>
+									<p class="mt-1 text-xs text-muted-foreground">
+										After adding, it will appear in your server list. Click refresh to populate
+										tools.
+									</p>
+								</div>
+							</li>
+							<li class="flex items-start gap-4">
+								<div
+									class="flex h-8 w-8 shrink-0 items-center justify-center bg-primary text-primary-foreground"
+								>
+									<MessageSquare class="h-4 w-4" />
+								</div>
+								<div>
+									<p class="text-sm font-bold tracking-tight uppercase">Automatic Usage</p>
+									<p class="mt-1 text-xs text-muted-foreground">
+										The Composer Agent uses MCP tools automatically. You can also explicitly prompt
+										tool usage by name.
+									</p>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</section>
+
+				<!-- Important Notes -->
+				<div class="rounded-none border-2 border-dotted border-primary/20 bg-primary/5 p-6">
+					<div class="flex items-start gap-3">
+						<Info class="h-5 w-5 shrink-0 text-primary" />
+						<div class="space-y-2">
+							<h5 class="text-xs font-black tracking-widest text-primary uppercase">
+								Important Notes
+							</h5>
+							<ul class="list-none space-y-1 p-0 pl-1 text-[11px] leading-tight text-primary/80">
+								<li class="flex items-start gap-2">
+									<span>▪</span> MCP tools may not work with all models.
+								</li>
+								<li class="flex items-start gap-2">
+									<span>▪</span> MCP tools are only available to the Agent in Composer.
+								</li>
+								<li class="flex items-start gap-2">
+									<span>▪</span> For servers requiring environment variables, create a wrapper script.
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{/snippet}
 
 {#snippet codeCpy(code: string)}
 	<div
@@ -322,26 +527,22 @@
 						<h4
 							class="text-lg font-black tracking-widest uppercase underline decoration-dotted underline-offset-8"
 						>
-							Transport Protocol
+							Global Transport
 						</h4>
-						<p class="text-muted-foreground">The delivery mechanism for your MCP connection.</p>
+						<p class="text-muted-foreground">Default delivery mechanism for server connections.</p>
 					</div>
-					<div class="flex items-center gap-4 border border-border/50 bg-background/50 p-2">
-						<span
-							class="text-sm font-black {preferredTransport === 'http'
-								? 'text-primary'
-								: 'text-muted-foreground opacity-50'}">HTTP</span
-						>
-						<Switch
-							checked={preferredTransport === 'sse'}
-							onCheckedChange={(checked) => (preferredTransport = checked ? 'sse' : 'http')}
-							class=""
-						/>
-						<span
-							class="text-sm font-black {preferredTransport === 'sse'
-								? 'text-primary'
-								: 'text-muted-foreground opacity-50'}">SSE</span
-						>
+					<div class="flex items-center gap-2 border border-border/50 bg-background/50 p-2">
+						{#each ['sse', 'stdio', 'http'] as mode}
+							<Button
+								variant="ghost"
+								size="sm"
+								class="h-10 rounded-none border border-transparent px-4 text-xs font-black uppercase transition-all data-[active=true]:border-primary data-[active=true]:bg-primary data-[active=true]:text-primary-foreground data-[active=true]:hover:text-primary"
+								onclick={() => (preferredTransport = mode as any)}
+								data-active={preferredTransport === mode}
+							>
+								{mode}
+							</Button>
+						{/each}
 					</div>
 				</div>
 			</div>
@@ -370,23 +571,27 @@
 						<div class="mt-8">
 							<Tabs.Content
 								value="cursor"
-								class="container  animate-in overflow-clip duration-300 fade-in"
+								class="container animate-in overflow-clip duration-300 fade-in"
 							>
+								{@render mcpHeadToggle(
+									'Cursor',
+									preferredTransport,
+									(m) => (preferredTransport = m)
+								)}
+
 								<p class="mb-4 text-base font-bold text-foreground">
 									Add to <span class="underline decoration-dotted underline-offset-4"
-										>Cursor Rules</span
-									>
-									or
-									<span class="underline decoration-dotted underline-offset-4"
-										>Project Settings</span
+										>Cursor Settings</span
 									>:
 								</p>
 								<div
 									class="mb-4 flex items-center gap-2 rounded-none bg-primary/10 px-3 py-1 text-xs font-black text-primary uppercase"
 								>
-									Transport: {preferredTransport}
+									Transport: {preferredTransport === 'stdio' ? 'stdio (command)' : 'sse (url)'}
 								</div>
 								{@render codeCpy(formatConfig(installConfig.cursor || ''))}
+
+								{@render cursorGuide()}
 							</Tabs.Content>
 
 							<Tabs.Content value="vscode" class="animate-in duration-300 fade-in">
@@ -455,17 +660,25 @@
 							</Tabs.Content>
 
 							<Tabs.Content value="gemini" class="animate-in duration-300 fade-in">
-								<p
-									class="mb-4 text-base font-bold tracking-tighter uppercase underline decoration-dotted underline-offset-4"
-								>
-									Gemini Config
-								</p>
+								<div class="mb-4 flex items-center justify-between">
+									<p
+										class="text-base font-bold tracking-tighter uppercase underline decoration-dotted underline-offset-4"
+									>
+										Gemini Config
+									</p>
+									<div class="flex items-center gap-2">
+										<label for="gemini-mcp-toggle" class="text-sm text-muted-foreground">
+											Include mcpServers
+										</label>
+										<Switch id="gemini-mcp-toggle" bind:checked={showGeminiMcpServers} />
+									</div>
+								</div>
 								<p class="mb-2 text-sm text-muted-foreground">
 									Add to your <strong class="bg-primary/10 px-1 text-primary"
 										>gemini_config.json</strong
 									>:
 								</p>
-								{@render codeCpy(formatConfig(installConfig.gemini || ''))}
+								{@render codeCpy(formatConfig(geminiConfigDisplay()))}
 							</Tabs.Content>
 
 							<Tabs.Content value="codex" class="animate-in duration-300 fade-in">
@@ -481,17 +694,25 @@
 							<Tabs.Content value="claude" class="animate-in duration-300 fade-in">
 								<div class="grid gap-8">
 									<div class="space-y-4">
-										<p
-											class="text-base font-bold tracking-tighter uppercase underline decoration-dotted underline-offset-4"
-										>
-											Claude Desktop
-										</p>
+										<div class="flex items-center justify-between">
+											<p
+												class="text-base font-bold tracking-tighter uppercase underline decoration-dotted underline-offset-4"
+											>
+												Claude Desktop
+											</p>
+											<div class="flex items-center gap-2">
+												<label for="claude-mcp-toggle" class="text-sm text-muted-foreground">
+													Include mcpServers
+												</label>
+												<Switch id="claude-mcp-toggle" bind:checked={showClaudeMcpServers} />
+											</div>
+										</div>
 										<p class="text-sm text-muted-foreground">
 											Add to <strong class="bg-primary/10 px-1 text-primary"
 												>claude_desktop_config.json</strong
 											>:
 										</p>
-										{@render codeCpy(formatConfig(installConfig.claude?.config || ''))}
+										{@render codeCpy(formatConfig(claudeConfigDisplay()))}
 									</div>
 									<Separator class="rounded-none" />
 									<div class="space-y-4">
@@ -507,12 +728,20 @@
 							</Tabs.Content>
 
 							<Tabs.Content value="windsurf" class="animate-in duration-300 fade-in">
-								<p
-									class="mb-4 text-base font-bold tracking-tighter uppercase underline decoration-dotted underline-offset-4"
-								>
-									Windsurf Config
-								</p>
-								{@render codeCpy(formatConfig(installConfig.windsurf || ''))}
+								<div class="mb-4 flex items-center justify-between">
+									<p
+										class="text-base font-bold tracking-tighter uppercase underline decoration-dotted underline-offset-4"
+									>
+										Windsurf Config
+									</p>
+									<div class="flex items-center gap-2">
+										<label for="windsurf-mcp-toggle" class="text-sm text-muted-foreground">
+											Include mcpServers
+										</label>
+										<Switch id="windsurf-mcp-toggle" bind:checked={showWindsurfMcpServers} />
+									</div>
+								</div>
+								{@render codeCpy(formatConfig(windsurfConfigDisplay()))}
 							</Tabs.Content>
 
 							<Tabs.Content value="zed" class="animate-in duration-300 fade-in">

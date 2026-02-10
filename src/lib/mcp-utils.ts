@@ -7,7 +7,7 @@ import type { MCP, MCPInstallConfig } from './types';
  */
 export function getFullInstallConfig(
 	mcp: MCP,
-	transport: 'sse' | 'http' = 'sse'
+	transport: 'sse' | 'http' | 'stdio' = 'sse'
 ): MCPInstallConfig {
 	const { endpoints: explicitEndpoints, mastra, name, install = {} } = mcp;
 
@@ -26,6 +26,7 @@ export function getFullInstallConfig(
 
 	if (endpoints) {
 		const { sse, http } = endpoints;
+		// If transport is stdio or http, we often use the http endpoint with a bridge
 		const url = transport === 'sse' ? sse : http;
 
 		generated.claude = {
@@ -37,21 +38,31 @@ export function getFullInstallConfig(
 					}
 				}
 			},
-			command: `claude mcp add --transport ${transport} ${name} ${url}`
+			command: `claude mcp add --transport ${transport === 'sse' ? 'sse' : 'stdio'} ${name} ${url}`
 		};
 
-		generated.cursor = {
-			[name]: {
-				type: transport,
-				url: url
-			}
-		};
+		if (transport === 'stdio') {
+			generated.cursor = {
+				[name]: {
+					type: 'stdio',
+					command: 'npx',
+					args: ['-y', 'mcp-remote', url]
+				}
+			};
+		} else {
+			generated.cursor = {
+				[name]: {
+					type: 'sse',
+					url: sse
+				}
+			};
+		}
 
 		generated.windsurf = {
 			mcpServers: {
 				[name]: {
 					url: url,
-					transport: transport
+					transport: transport === 'sse' ? 'sse' : 'stdio'
 				}
 			}
 		};

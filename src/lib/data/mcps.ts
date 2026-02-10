@@ -23,11 +23,13 @@ export const mcps: MCP[] = [
 		tools: [
 			{
 				name: 'shadcn-svelte-list',
-				description: 'List all available shadcn-svelte components, blocks, charts, and documentation sections.'
+				description:
+					'List all available shadcn-svelte components, blocks, charts, and documentation sections.'
 			},
 			{
 				name: 'shadcn-svelte-get',
-				description: 'Retrieve detailed content, metadata, and code blocks for a specific component or doc.'
+				description:
+					'Retrieve detailed content, metadata, and code blocks for a specific component or doc.'
 			},
 			{
 				name: 'shadcn-svelte-icons',
@@ -194,7 +196,8 @@ export const mcps: MCP[] = [
 			},
 			{
 				name: 'get-doc',
-				description: 'Get the documentation content for a specific route (text and code from GitHub).'
+				description:
+					'Get the documentation content for a specific route (text and code from GitHub).'
 			},
 			{
 				name: 'get-source',
@@ -202,13 +205,60 @@ export const mcps: MCP[] = [
 			},
 			{
 				name: 'search-docs',
-				description: 'Search for specific documentation and components within the LayerChart repository.'
+				description:
+					'Search for specific documentation and components within the LayerChart repository.'
 			}
 		],
 		exampleQueries: [
 			'How to create a BarChart with LayerChart?',
 			'Search LayerChart docs for PieChart examples',
 			'What are the props for the AreaChart component?'
+		]
+	},
+	{
+		id: 'drizzle-docs',
+		name: 'drizzle-docs-mcp',
+		description:
+			'Mastra MCP server and tooling that provides real-time access to all Drizzle ORM documentation pages with fuzzy search, pre-caching, and flexible content retrieval.',
+		tags: ['Drizzle', 'ORM', 'Mastra', 'Documentation', 'Web Scraping'],
+		githubUrl: 'https://github.com/Michael-Obele/drizzle-docs',
+		features: [
+			'Production deployment on Mastra Cloud',
+			'Three main MCP tools for comprehensive Drizzle ORM support',
+			'Smart Fuzzy Search: Powered by fuse.js, allowing for typos and partial matches.',
+			'Pre-caching: Automatically fetches and indexes all 97 documentation pages at startup.',
+			'Flexible Content Retrieval: Fetch full pages or specific sections in Markdown, JSON, or Plaintext.',
+			'Support for all major AI code editors',
+			'HTTP and SSE transport protocols',
+			'Real-time web scraping from orm.drizzle.team'
+		],
+		mastra: {
+			domain: 'drizzle.mastra.cloud',
+			slug: 'drizzle-docs-mcp'
+		},
+		install: {},
+		tools: [
+			{
+				name: 'list_topics',
+				description:
+					'Discover all 97 available Drizzle ORM documentation pages. Use this to understand the structure or find specific topic slugs.'
+			},
+			{
+				name: 'fetch_page',
+				description:
+					'Fetch and convert documentation pages to Markdown with optional filtering (slug, format, sections, maxLength).'
+			},
+			{
+				name: 'search_docs',
+				description: 'Search the documentation using intelligent fuzzy matching (query, limit).'
+			}
+		],
+		exampleQueries: [
+			'Show me how to setup a Postgres schema in Drizzle',
+			'List all Drizzle docs topics',
+			'Search for relational query examples in Drizzle',
+			'How do I handle migrations with Drizzle Kit?',
+			'Compare Drizzle select vs relational query builders'
 		]
 	}
 ];
