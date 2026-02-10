@@ -1,4 +1,4 @@
-## [2026-02-05]
+## [2026-02-10]
 
 
 ### Bug Fixes
@@ -17,6 +17,7 @@
 ### Documentation
 
 - Update component structure and code quality sections in AI agent instructions
+- Update changelog [skip ci]
 - Update changelog [skip ci]
 - Update changelog [skip ci]
 - Update changelog [skip ci]
@@ -58,6 +59,7 @@
 - Update favicon imports and references for improved asset management
 - Enhance database handling with mock client and update documentation
 - Add support for alternative JSON format in MCP configuration
+- Enhance MCP configuration with support for stdio transport and new Drizzle MCP
 ### Miscellaneous Tasks
 
 - Prepare mcps.ts for future development
